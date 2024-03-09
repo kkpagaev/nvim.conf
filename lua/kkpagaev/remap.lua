@@ -161,4 +161,33 @@ vim.keymap.set("n", ",t", "'t")
 vim.keymap.set("n", ",n", "'n")
 vim.keymap.set("n", ",s", "'s")
 
+vim.cmd([[nmap + %]])
+vim.cmd([[vmap + %]])
+-- vim.keymap.set("n", "+", "%")
+-- vim.keymap.set("v", "+", "%")
+
+vim.api.nvim_set_keymap('n', '<Leader>e', [[:lua CheckAndOpen()<CR>]], {silent = true})
+-- vim.cmd([[map <silent> <Leader>e :Ex <bar> :sil! /<C-R>=expand("%:t")<CR><CR>]])
+
+local latest_buffer = ""
+
+function CheckAndOpen()
+    if vim.bo.filetype == 'netrw' then
+      -- opens latest_buffer in a buffer
+
+      vim.cmd("e " .. latest_buffer)
+    else
+      local current_filename = vim.fn.expand("%:t")
+      local current_buffer = vim.fn.expand("%:p")
+      latest_buffer = current_buffer
+      vim.cmd('Ex | sil! /' .. current_filename)
+    end
+end
+
+vim.cmd([[au FileType netrw nmap <buffer> h -]])
+vim.cmd([[au FileType netrw nmap <buffer> n <CR>]])
+vim.cmd([[au FileType netrw nmap <buffer> a %]])
+
+
+-- au FileType netrw nmap <buffer> <left> -
 

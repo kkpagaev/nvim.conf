@@ -5,7 +5,7 @@ return {
   },
   lazy = true,
   keys = {
-    { "<leader>e", "<cmd>NvimTreeToggle<CR>" }
+    -- { "<leader>e", "<cmd>NvimTreeToggle<CR>" }
   },
   opts = {
     on_attach = function(bufnr)

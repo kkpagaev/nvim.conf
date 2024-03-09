@@ -4,7 +4,7 @@ return {
     "nvim-treesitter/nvim-treesitter-context",
     "windwp/nvim-ts-autotag",
     -- "RRethy/nvim-treesitter-endwise",
-    "nvim-treesitter/playground",
+    -- "nvim-treesitter/playground",
     -- 'nvim-treesitter/nvim-treesitter-context',
   },
   lazy = false,

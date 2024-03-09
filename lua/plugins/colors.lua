@@ -6,6 +6,7 @@
 -- local theme = "palenightfall"
 -- local theme = "ofirkai"
 local theme = "kanagawa"
+-- local theme = "bamboo-multiplex"
 -- local theme = "kanagawa-dragon"
 -- local theme = "rose-pine"
 -- local theme = "spaceduck"
@@ -16,7 +17,7 @@ return {
   dependencies = {
     "rose-pine/neovim",
     "JoosepAlviste/palenightfall.nvim",
-  "rebelot/kanagawa.nvim",
+    "rebelot/kanagawa.nvim",
     -- { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
     -- "arturgoms/moonbow.nvim",
   --   "ofirgall/ofirkai.nvim",
@@ -35,6 +36,20 @@ return {
   -- install = { colorscheme = { "moonbow" } },
   -- oniViolet
   config = function()
+
+    -- require('bamboo').setup {
+    --  transparent = true, -- Show/hide background
+    --   dim_inactive = false, -- Dim inactive windows/buffers
+    --   -- optional configuration here
+    --   highlights = {
+    --     -- make comments blend nicely with background, similar to other color schemes
+    --     ['@comment'] = { fg = '$grey' },
+    --     ["WinBar"] = { fg = '$fg' },
+    --       -- optional configuration here
+    --   }
+    -- }
+    -- require('bamboo').load()
+
     require('kanagawa').setup({
       colors = {
         palette = {
@@ -80,41 +95,41 @@ return {
         }
       end,
     })
-    -- setup must be called before loading the colorscheme
-    -- Default options:
-    require("gruvbox").setup({
-      undercurl = true,
-      underline = true,
-      bold = true,
-      italic = {
-        strings = true,
-        comments = true,
-        operators = false,
-        folds = true,
-      },
-      strikethrough = true,
-      invert_selection = false,
-      invert_signs = false,
-      invert_tabline = false,
-      invert_intend_guides = false,
-      inverse = true, -- invert background for search, diffs, statuslines and errors
-      contrast = "hard",  -- can be "hard", "soft" or empty string
-      palette_overrides = {},
-      overrides = {
-        WinBar = { bg = "" },
-        WinBarNC = { bg = "" },
-        SignColumn = { link = "Normal" },
-        GruvboxGreenSign = { bg = "" },
-        GruvboxOrangeSign = { bg = "" },
-        GruvboxPurpleSign = { bg = "" },
-        GruvboxYellowSign = { bg = "" },
-        GruvboxRedSign = { bg = "" },
-        GruvboxBlueSign = { bg = "" },
-        GruvboxAquaSign = { bg = "" },
-      },
-      dim_inactive = false,
-      transparent_mode = false,
-    })
+
+    -- require("gruvbox").setup({
+    --   undercurl = true,
+    --   underline = true,
+    --   bold = true,
+    --   italic = {
+    --     strings = true,
+    --     comments = true,
+    --     operators = false,
+    --     folds = true,
+    --   },
+    --   strikethrough = true,
+    --   invert_selection = false,
+    --   invert_signs = false,
+    --   invert_tabline = false,
+    --   invert_intend_guides = false,
+    --   inverse = true, -- invert background for search, diffs, statuslines and errors
+    --   contrast = "hard",  -- can be "hard", "soft" or empty string
+    --   palette_overrides = {},
+    --   overrides = {
+    --     WinBar = { bg = "" },
+    --     WinBarNC = { bg = "" },
+    --     SignColumn = { link = "Normal" },
+    --     GruvboxGreenSign = { bg = "" },
+    --     GruvboxOrangeSign = { bg = "" },
+    --     GruvboxPurpleSign = { bg = "" },
+    --     GruvboxYellowSign = { bg = "" },
+    --     GruvboxRedSign = { bg = "" },
+    --     GruvboxBlueSign = { bg = "" },
+    --     GruvboxAquaSign = { bg = "" },
+    --   },
+    --   dim_inactive = false,
+    --   transparent_mode = false,
+    -- })
+
     -- vim.cmd("colorscheme gruvbox")
 
     -- require("transparent").setup({

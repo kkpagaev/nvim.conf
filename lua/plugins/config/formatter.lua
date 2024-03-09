@@ -38,6 +38,7 @@ require('formatter').setup {
     -- vue = { format_prettier },
 
     typescript = { format_eslint },
+    javascript = { format_eslint },
     typescriptreact = { format_eslint },
     vue = { format_eslint },
     astro = { format_eslint },

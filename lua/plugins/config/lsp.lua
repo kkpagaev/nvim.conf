@@ -210,18 +210,18 @@ require("typescript-tools").setup {
   },
 }
 
-require 'lspconfig'.sqls.setup {
-  settings = {
-    sqls = {
-      connections = {
-        {
-          driver = 'postgresql',
-          dataSourceName = 'host=127.0.0.1 port=1252 user=user password=user dbname=user',
-        },
-      },
-    },
-  },
-}
+-- require 'lspconfig'.sqls.setup {
+--   settings = {
+--     sqls = {
+--       connections = {
+--         {
+--           driver = 'postgresql',
+--           dataSourceName = 'host=127.0.0.1 port=1252 user=user password=user dbname=user',
+--         },
+--       },
+--     },
+--   },
+-- }
 
 require 'lspconfig'.eslint.setup({
   on_attach = on_attach

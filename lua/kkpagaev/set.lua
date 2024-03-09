@@ -66,7 +66,7 @@ o.smartcase = true
 
 -- vim.opt.iskeyword:append("-")
 
--- vim.opt.smartindent = true
+vim.opt.smartindent = true
 
 vim.opt.wrap = false
 
@@ -81,3 +81,19 @@ vim.o.pumheight = 10
 vim.g.ftplugin_sql_omni_key = '<C-j>'
 
 vim.opt.mouse = ""
+
+-- vim.g.netrw_liststyle = 3
+-- vim.g.netrw_banner = 0
+-- vim.g.netrw_browse_split = 4
+-- vim.g.netrw_altv = 1
+-- vim.g.netrw_winsize = 25
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "netrw",
+  callback = function()
+    vim.keymap.set("n", "s", function()
+      local path = (vim.fn.expand("%:p"))
+      require("telescope.builtin").find_files({ cwd = path })
+    end, { buffer = true, noremap = true, silent = true })
+  end,
+})
