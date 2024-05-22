@@ -76,14 +76,16 @@ vim.keymap.set("n", "<leader>S", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 
 
 -- quickfix
-map('n', "<leader>;", ":copen<cr>")
+map('n', "<leader>q", ":copen<cr>")
 
 map('n', '<leader>l', ':Format<CR>')
 map('n', '<leader>i', ':TSToolsAddMissingImports<CR>')
 
-map('n', '<leader>d', ':TSToolsRemoveUnused<CR>')
+map('n', ',h', 'yiwoconsole.log(<esc>pa);<esc>V')
+map('n', ',H', 'yiwOconsole.log(<esc>pa);<esc>')
+map('v', ',', 'yoconsole.log({ <esc>pa });<esc>')
 
-map('v', '<leader>p', '"_dP')
+map('n', '<leader>d', ':TSToolsRemoveUnused<CR>')
 
 map('n', 'go', '<C-o>')
 map('n', 'gi', '<C-i>')
@@ -156,23 +158,23 @@ vim.keymap.set("n", "[g", vim.diagnostic.goto_prev)
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
-vim.keymap.set("n", ",h", "'h")
-vim.keymap.set("n", ",t", "'t")
-vim.keymap.set("n", ",n", "'n")
-vim.keymap.set("n", ",s", "'s")
+-- vim.keymap.set("n", ",h", "'h")
+-- vim.keymap.set("n", ",t", "'t")
+-- vim.keymap.set("n", ",n", "'n")
+-- vim.keymap.set("n", ",s", "'s")
 
 vim.cmd([[nmap + %]])
 vim.cmd([[vmap + %]])
 -- vim.keymap.set("n", "+", "%")
 -- vim.keymap.set("v", "+", "%")
 
-vim.api.nvim_set_keymap('n', '<Leader>e', [[:lua CheckAndOpen()<CR>]], {silent = true})
+vim.api.nvim_set_keymap('n', '<Leader>e', [[:sil lua CheckAndOpen()<CR>]], {silent = true})
 -- vim.cmd([[map <silent> <Leader>e :Ex <bar> :sil! /<C-R>=expand("%:t")<CR><CR>]])
 
 local latest_buffer = ""
 
 function CheckAndOpen()
-    if vim.bo.filetype == 'netrw' then
+    if vim.bo.filetype == 'netrw' or vim.bo.filetype == 'oil' then
       -- opens latest_buffer in a buffer
 
       vim.cmd("e " .. latest_buffer)
@@ -180,7 +182,7 @@ function CheckAndOpen()
       local current_filename = vim.fn.expand("%:t")
       local current_buffer = vim.fn.expand("%:p")
       latest_buffer = current_buffer
-      vim.cmd('Ex | sil! /' .. current_filename)
+      vim.cmd("Oil")
     end
 end
 
@@ -191,3 +193,5 @@ vim.cmd([[au FileType netrw nmap <buffer> a %]])
 
 -- au FileType netrw nmap <buffer> <left> -
 
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")

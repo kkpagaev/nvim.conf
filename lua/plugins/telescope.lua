@@ -44,7 +44,7 @@ return {
         },
         layout_config = {
           horizontal = {
-            preview_width = 0.55,
+            preview_width = 0,
             results_width = 0.8,
           },
           -- vertical = {

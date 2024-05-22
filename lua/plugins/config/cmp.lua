@@ -29,7 +29,12 @@ cmp.setup {
     ["<C-t>"] = cmp.mapping.close(),
     ['<Down>'] = cmp.mapping.select_next_item(),
     ['<Up>'] = cmp.mapping.select_prev_item(),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-f>'] = cmp.mapping(function()
+
+      if cmp.visible() then
+        cmp.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace })
+      end
+    end),
     ['<C-Space>'] =
         cmp.mapping.complete({
           -- reason = cmp.ContextReason.Auto,

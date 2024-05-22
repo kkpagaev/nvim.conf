@@ -41,6 +41,7 @@ local plugins = {
       { "gb",   mode = "v" },
     },
   },
+
   {
     "NvChad/nvim-colorizer.lua",
     lazy = false,
@@ -74,16 +75,36 @@ local plugins = {
       }
     end
   },
+
   {
     'lewis6991/gitsigns.nvim',
     lazy = false,
     keys = {
-      { "<leader>b", "<CMD>Gitsigns blame_line<CR>" }
+      { "<leader>b", "<CMD>Gitsigns blame_line<CR>" },
+      { "[=" },
+      { "]=" }
     },
     config = function()
-      require("gitsigns").setup()
+      local gitsigns = require('gitsigns')
+      gitsigns.setup()
+      vim.keymap.set('n', '[=', function()
+        if vim.wo.diff then
+          vim.cmd.normal({'[=', bang = true})
+        else
+          gitsigns.nav_hunk('next')
+        end
+      end)
+
+      vim.keymap.set('n', ']=', function()
+        if vim.wo.diff then
+          vim.cmd.normal({']=', bang = true})
+        else
+          gitsigns.nav_hunk('prev')
+        end
+      end)
     end,
   },
+
   {
     "mhartington/formatter.nvim",
     event = "BufWritePre",
@@ -92,6 +113,7 @@ local plugins = {
       require("plugins.config.formatter")
     end
   },
+
   {
     'neovim/nvim-lspconfig',
     dependencies = {
@@ -270,23 +292,6 @@ local plugins = {
       require("plugins.config.lint")
     end
   },
-  -- "simrat39/rust-tools.nvim",
-  -- {
-  --   'kevinhwang91/nvim-bqf',
-  --   ft = 'qf',
-  --   config = function()
-  --     require('bqf').setup({
-  --       magic_window = false,
-  --       preview = {
-  --         border = 'none',
-  --         win_height = 999,
-  --         show_scroll_bar = false,
-  --         winblend = 0
-  --       }
-  --     })
-  --   end
-  -- },
-  -- lazy.nvim:
   {
     "mbbill/undotree",
     lazy = true,
@@ -360,7 +365,6 @@ local plugins = {
     end
   },
   {
-
      'tpope/vim-dadbod', lazy = true,
   dependencies = {
     { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' } },
@@ -368,7 +372,45 @@ local plugins = {
   cmd = {
     'DB',
   }
-}
+},
+  {
+    "danymat/neogen",
+    lazy = true,
+    keys = { {"<leader>na", "<cmd>Neogen func<cr>"}, {"<leader>nt", "<cmd>Neogen type<cr>"}},
+    config = function()
+        require('neogen').setup {}
+    end,
+
+  },
+  {
+    "stevearc/oil.nvim",
+    cmd = { "Oil" },
+    config = function ()
+      require("oil").setup({
+        columns = {
+          "icon",
+        },
+        keymaps = {
+          ["g?"] = "actions.show_help",
+          ["n"] = "actions.select",
+          ["<C-s>"] = "actions.select_vsplit",
+          ["<C-h>"] = "actions.select_split",
+          ["<C-t>"] = "actions.select_tab",
+          ["<C-p>"] = "actions.preview",
+          ["<C-c>"] = "actions.close",
+          ["<C-l>"] = "actions.refresh",
+          ["h"] = "actions.parent",
+          ["_"] = "actions.open_cwd",
+          ["`"] = "actions.cd",
+          ["~"] = "actions.tcd",
+          ["gs"] = "actions.change_sort",
+          ["gx"] = "actions.open_external",
+          ["g."] = "actions.toggle_hidden",
+          ["g\\"] = "actions.toggle_trash",
+        },
+      })
+    end
+  }
 }
 
 require("lazy").setup(plugins, {

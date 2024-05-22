@@ -32,6 +32,10 @@ return {
 
     local winbar = require("markbar.winbar")
 
+    vim.keymap.set('v', '<leader>h', function()
+      require("harpoon.ui").toggle_quick_menu()
+      winbar.clear()
+    end)
     vim.keymap.set('n', '<leader>h', function()
       require("harpoon.ui").toggle_quick_menu()
       winbar.clear()
@@ -84,6 +88,18 @@ return {
           vim.cmd("vs")
           vim.cmd("e " .. working_directory .. curline)
         end, { buffer = true, noremap = true, silent = true })
+
+        -- vim.keymap.set("v", "d", "dV", { buffer = true, noremap = true, silent = true })
+        -- vim.keymap.set("v", "j", ":m '>+1<CR>gv=gv", { buffer = true, noremap = true, silent = true })
+        -- vim.keymap.set("v", "j", ":m '>+1<CR>gv=gv", { buffer = true, noremap = true, silent = true })
+        -- vim.keymap.set("v", "J", "j", { buffer = true, noremap = true, silent = true })
+        -- vim.keymap.set("v", "K", "k", { buffer = true, noremap = true, silent = true })
+
+        -- vim.keymap.set("v", "j", "<ESC>jV", { buffer = true, noremap = true, silent = true })
+        -- vim.keymap.set("v", "k", "<ESC>kV", { buffer = true, noremap = true, silent = true })
+        --
+        -- vim.keymap.set("n", "v", "V", { buffer = true, noremap = true, silent = true })
+        -- vim.keymap.set("v", "v", "<esc>", { buffer = true, noremap = true, silent = true })
       end,
     })
 
@@ -105,15 +121,25 @@ return {
       winbar.open()
     end)
 
-    vim.keymap.set("n", "<CR>", function()
-      local mark = require('harpoon.mark')
-      local i = mark.get_current_index()
+    vim.api.nvim_create_autocmd("FileType", {
+      callback = function()
+        local filetype = vim.bo.filetype
+        if filetype == "qf" or filetype == "netrw" or filetype == "oil" then
+          return
+        end
 
-      mark.toggle_file(i)
+        vim.keymap.set("n", "<CR>", function()
+          local mark = require('harpoon.mark')
+          local i = mark.get_current_index()
 
-      winbar.clear()
-      winbar.open()
-    end)
+          mark.toggle_file(i)
+
+          winbar.clear()
+          winbar.open()
+        end, { buffer = true, noremap = true, silent = true })
+      end,
+    })
+
 
     vim.keymap.set("n", "<leader>ch", function ()
       require("harpoon.mark").clear_all()

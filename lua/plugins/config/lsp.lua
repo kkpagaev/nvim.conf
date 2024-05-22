@@ -18,6 +18,10 @@ local on_attach = function(client, bufnr)
 
   vim.keymap.set("n", "S", require("hover").hover, { desc = "hover.nvim" })
   vim.keymap.set("n", "gS", require("hover").hover_select, { desc = "hover.nvim (select)" })
+  vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+  vim.keymap.set("n", ",t", vim.diagnostic.open_float)
+  vim.keymap.set('n', '[*', vim.diagnostic.goto_prev)
+  vim.keymap.set('n', ']*', vim.diagnostic.goto_next)
 
   -- vim.keymap.set("n", "gK", require("hover").hover_select, { desc = "hover.nvim (select)" })
 

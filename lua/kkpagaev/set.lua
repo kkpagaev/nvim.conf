@@ -2,6 +2,7 @@ local o = vim.o
 
 vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.undofile = true
+vim.opt.swapfile = true
 
 local filetypes = {}
 filetypes["dap-repl"] = false
@@ -35,6 +36,7 @@ vim.g.vimwiki_ext2syntax = {
 o.relativenumber = true
 o.number = true
 o.cursorline = false
+o.inccommand = "split"
 
 o.tabstop = 2
 -- o.notimeout = true
@@ -42,6 +44,7 @@ o.expandtab = true
 o.softtabstop = 2
 o.shiftwidth = 2
 o.wrap = true
+-- o.shortmess = o.shortmess .. "at"
 o.shortmess = o.shortmess .. "at"
 
 
