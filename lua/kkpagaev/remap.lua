@@ -123,9 +123,6 @@ map('s', "K", "K")
 vim.keymap.set('n', '<Tab>', '<C-W>w')
 vim.keymap.set('n', '<S-Tab>', '<C-W>W')
 
-vim.cmd([[nmap s _wwyef`a<<esc>pbiI<esc>l~f`aQuery><esc>bye/queries.types<cr>^t{a <esc>pa,<esc><C-o>]])
--- vim.keymap.set('n', 's', '_wwyef`a<<esc>pbiI<esc>l~f`aQuery><esc>')
-
 -- ???
 vim.keymap.set('n', '<C-f>', function()
   vim.fn.system('t')

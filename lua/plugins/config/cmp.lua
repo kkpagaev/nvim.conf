@@ -30,7 +30,6 @@ cmp.setup {
     ['<Down>'] = cmp.mapping.select_next_item(),
     ['<Up>'] = cmp.mapping.select_prev_item(),
     ['<C-f>'] = cmp.mapping(function()
-
       if cmp.visible() then
         cmp.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace })
       end

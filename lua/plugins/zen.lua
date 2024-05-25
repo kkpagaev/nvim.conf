@@ -2,7 +2,8 @@ return {
     "folke/zen-mode.nvim",
     lazy = true,
     keys = {
-      "<F5>"
+      "<F5>",
+      "<leader>z"
     },
     config = function()
       require("zen-mode").setup {
@@ -33,6 +34,9 @@ return {
         }
         },
       }
+      vim.keymap.set("n", "<leader>z", function()
+        require("zen-mode").toggle()
+      end)
       vim.keymap.set("n", "<F5>", function()
         require("zen-mode").toggle()
       end)

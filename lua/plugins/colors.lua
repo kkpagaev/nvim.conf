@@ -1,12 +1,13 @@
+-- local theme = "vesper"
+-- local theme = "MountainDew"
+local theme = "gruvbox"
+-- local theme = "kanagawa"
 -- local theme = "everblush"
 -- local theme = "kanagawa-lotus"
 -- local theme = "gruvbox-baby"
--- local theme = "gruvbox"
-local theme = "vesper"
 -- local theme = "rose-pine"
 -- local theme = "palenightfall"
 -- local theme = "ofirkai"
--- local theme = "kanagawa"
 -- local theme = "bamboo-multiplex"
 -- local theme = "kanagawa-dragon"
 -- local theme = "rose-pine"
@@ -16,9 +17,7 @@ return {
     "ellisonleao/gruvbox.nvim",
   commit = "6d409ee",
   dependencies = {
-    "VonHeikemen/nvim-light",
-    "rose-pine/neovim",
-    "JoosepAlviste/palenightfall.nvim",
+    "vim-scripts/MountainDew.vim",
     "rebelot/kanagawa.nvim",
     'datsfilipe/vesper.nvim',
     -- { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
@@ -158,7 +157,9 @@ return {
     -- vim.cmd("colorscheme kanagawa")
     -- vim.cmd("colorscheme spaceduck")
     -- vim.cmd("colorscheme moonbow")
-	vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+    if theme ~= "MountainDew" then
+      vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+    end
 	-- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 	-- vim.api.nvim_set_hl(0, "StatusLine", { bg = "none" })
 	-- vim.api.nvim_set_hl(0, "StatusLineN", { bg = "none" })

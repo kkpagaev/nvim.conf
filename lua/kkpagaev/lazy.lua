@@ -387,6 +387,9 @@ local plugins = {
     cmd = { "Oil" },
     config = function ()
       require("oil").setup({
+        view_options = {
+          show_hidden = true,
+        },
         columns = {
           "icon",
         },
@@ -410,7 +413,22 @@ local plugins = {
         },
       })
     end
-  }
+  },
+--   {
+--   'nvimdev/dashboard-nvim',
+--   event = 'VimEnter',
+--   config = function()
+--     require('dashboard').setup {
+--       -- config
+--       hide = {
+--   statusline = true   , -- hide statusline default is true
+--   tabline       =true, -- hide the tabline
+--   winbar        = true-- hide winbar
+-- },
+--     }
+--   end,
+--   dependencies = { {'nvim-tree/nvim-web-devicons'}}
+-- }
 }
 
 require("lazy").setup(plugins, {

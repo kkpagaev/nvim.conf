@@ -1,3 +1,10 @@
+local pickers = require "telescope.pickers"
+local finders = require "telescope.finders"
+local actions = require "telescope.actions"
+local action_state = require "telescope.actions.state"
+local conf = require("telescope.config").values
+local ui = require("harpoon.ui")
+
 local root_files = { "LICENSE", "package.json", "Makefile", "README.md" }
 local root_dirs = { ".git", ".github" }
 -- local og_root_dir = vim.fn.expand('%:p:h')
@@ -81,10 +88,52 @@ end)
 --     return table.concat(t,"\n")
 -- end
 
+
+local function goto_root(index)
+  local my_table = parse_file()
+  local root = my_table[index]
+  if not root then
+    print("no root for index " .. index)
+    return
+  end
+  set_root(root)
+
+        if require("harpoon.mark").get_length() == 0 then
+          require("telescope.builtin").find_files()
+          return
+        end
+        vim.cmd('noh')
+        ui.nav_file(1)
+end
+
+vim.keymap.set("n", "<leader><BS>", function()
+  goto_root(1)
+end)
+
+vim.keymap.set("n", "<leader><C-h>", function()
+  goto_root(1)
+end)
+
+vim.keymap.set("n", "<leader><C-t>", function()
+  goto_root(2)
+end)
+
+vim.keymap.set("n", "<leader><Down>", function()
+  goto_root(3)
+end)
+
+vim.keymap.set("n", "<leader><C-n>", function()
+  goto_root(3)
+end)
+
+vim.keymap.set("n", "<leader><C-s>", function()
+  goto_root(4)
+end)
+
 vim.keymap.set("n", "<leader>x", function()
   local cwd = vim.fn.expand('%:p:h')
   local root = get_root(cwd)
-  vim.api.nvim_feedkeys(":! cd " .. root .. " && yarn tsc", "n", true)
+  vim.api.nvim_feedkeys(":! cd " .. root .. " && go run main.go", "n", true)
 end)
 
 vim.keymap.set("n", "<leader>!", function()
@@ -129,12 +178,6 @@ vim.keymap.set("n", "<leader>!", function()
   )
 end)
 
-local pickers = require "telescope.pickers"
-local finders = require "telescope.finders"
-local actions = require "telescope.actions"
-local action_state = require "telescope.actions.state"
-local conf = require("telescope.config").values
-local ui = require("harpoon.ui")
 
 vim.keymap.set("n", "<leader>pa", function()
   local my_table = parse_file()
@@ -152,6 +195,55 @@ vim.keymap.set("n", "<leader>pa", function()
   write_table_to_file(my_table)
 end)
 
+vim.keymap.set("n", "<leader>pf", function()
+  local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+  local projects = vim.fn.systemlist("find " .. git_root .. "/apps " .. git_root .. "/packages -maxdepth 1 -mindepth 1 -type d")
+
+  -- print(vim.inspect(projects))
+
+
+  -- our picker function: colors
+  local colors = function(opts)
+    opts = opts or {}
+    pickers.new(opts, {
+      prompt_title = "colors",
+      finder = finders.new_table {
+        results = projects,
+      },
+       attach_mappings = function(prompt_bufnr, _)
+      -- modifying what happens on selection with <CR>
+        actions.select_default:replace(function()
+        -- closing picker
+        actions.close(prompt_bufnr)
+        -- the typically selection is table, depends on the entry maker
+        -- here { [1] = "one", value = "one", ordinal = "one", display = "one" }
+        -- value: original entry
+        -- ordinal: for sorting, possibly transformed value
+        -- display: for results list, possibly transformed value
+        local selection = action_state.get_selected_entry()
+        local new_root = selection[1]
+
+        set_root(new_root)
+
+        if require("harpoon.mark").get_length() == 0 then
+          require("telescope.builtin").find_files()
+          return
+        end
+        vim.cmd('noh')
+        ui.nav_file(1)
+        -- do stuff
+      end)
+      -- keep default keybindings
+      return true
+    end,
+      sorter = conf.generic_sorter(opts),
+    }):find()
+  end
+
+  colors()
+end)
+
+vim.keymap.set("n", "<leader>ph", ":e ~/my_table.txt<cr>")
 vim.keymap.set("n", "<leader>pp", function()
   -- print(vim.inspect(projects))
   local my_table = parse_file()
