@@ -128,6 +128,7 @@ local plugins = {
       }
     },
     lazy = false,
+    event = "BufEnter",
     -- event = "InsertEnter",
     -- init = function()
     --   lazy_load "nvim-lspconfig"
@@ -395,7 +396,7 @@ local plugins = {
         },
         keymaps = {
           ["g?"] = "actions.show_help",
-          ["n"] = "actions.select",
+          ["m"] = "actions.select",
           ["<C-s>"] = "actions.select_vsplit",
           ["<C-h>"] = "actions.select_split",
           ["<C-t>"] = "actions.select_tab",
@@ -429,6 +430,8 @@ local plugins = {
 --   end,
 --   dependencies = { {'nvim-tree/nvim-web-devicons'}}
 -- }
+-- lazy.nvim
+
 }
 
 require("lazy").setup(plugins, {

@@ -133,7 +133,7 @@ end)
 vim.keymap.set("n", "<leader>x", function()
   local cwd = vim.fn.expand('%:p:h')
   local root = get_root(cwd)
-  vim.api.nvim_feedkeys(":! cd " .. root .. " && go run main.go", "n", true)
+  vim.api.nvim_feedkeys(":! cd " .. root .. " && yarn build", "n", true)
 end)
 
 vim.keymap.set("n", "<leader>!", function()
@@ -195,7 +195,7 @@ vim.keymap.set("n", "<leader>pa", function()
   write_table_to_file(my_table)
 end)
 
-vim.keymap.set("n", "<leader>pf", function()
+vim.keymap.set("n", "<leader>pg", function()
   local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
   local projects = vim.fn.systemlist("find " .. git_root .. "/apps " .. git_root .. "/packages -maxdepth 1 -mindepth 1 -type d")
 
@@ -241,6 +241,48 @@ vim.keymap.set("n", "<leader>pf", function()
   end
 
   colors()
+end)
+
+vim.keymap.set("n", "<leader>pf", function()
+  local colors = function(opts)
+    opts = opts or {}
+    pickers.new(opts, {
+      prompt_title = "colors",
+      finder = finders.new_oneshot_job({ "zoxide", "query", "-l" }),
+       attach_mappings = function(prompt_bufnr, _)
+      -- modifying what happens on selection with <CR>
+        actions.select_default:replace(function()
+        -- closing picker
+        actions.close(prompt_bufnr)
+        -- the typically selection is table, depends on the entry maker
+        -- here { [1] = "one", value = "one", ordinal = "one", display = "one" }
+        -- value: original entry
+        -- ordinal: for sorting, possibly transformed value
+        -- display: for results list, possibly transformed value
+        local selection = action_state.get_selected_entry()
+        local new_root = selection[1]
+
+        set_root(new_root)
+
+        if require("harpoon.mark").get_length() == 0 then
+          require("telescope.builtin").find_files()
+          return
+        end
+        vim.cmd('noh')
+        ui.nav_file(1)
+        -- do stuff
+      end)
+      -- keep default keybindings
+      return true
+    end,
+      sorter = conf.generic_sorter(opts),
+    }):find()
+  end
+
+  colors()
+
+
+
 end)
 
 vim.keymap.set("n", "<leader>ph", ":e ~/my_table.txt<cr>")

@@ -30,15 +30,15 @@ return {
       }
     })
 
-    local winbar = require("markbar.winbar")
+    -- local winbar = require("markbar.winbar")
 
     vim.keymap.set('v', '<leader>h', function()
       require("harpoon.ui").toggle_quick_menu()
-      winbar.clear()
+      -- winbar.clear()
     end)
     vim.keymap.set('n', '<leader>h', function()
       require("harpoon.ui").toggle_quick_menu()
-      winbar.clear()
+      -- winbar.clear()
     end)
 
     local ui = require("harpoon.ui")
@@ -107,7 +107,7 @@ return {
       pattern = "harpoon",
       group = group,
       callback = function()
-        winbar.clear()
+        -- winbar.clear()
       end,
     })
 
@@ -117,8 +117,8 @@ return {
 
       mark.toggle_file(i)
 
-      winbar.clear()
-      winbar.open()
+      -- winbar.clear()
+      -- winbar.open()
     end)
 
     vim.api.nvim_create_autocmd("FileType", {
@@ -134,8 +134,8 @@ return {
 
           mark.toggle_file(i)
 
-          winbar.clear()
-          winbar.open()
+          -- winbar.clear()
+          -- winbar.open()
         end, { buffer = true, noremap = true, silent = true })
       end,
     })
@@ -143,10 +143,10 @@ return {
 
     vim.keymap.set("n", "<leader>ch", function ()
       require("harpoon.mark").clear_all()
-      winbar.clear()
-      winbar.open()
+      -- winbar.clear()
+      -- winbar.open()
     end)
 
-    winbar.open()
+    -- winbar.open()
   end
 }

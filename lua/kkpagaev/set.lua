@@ -1,5 +1,6 @@
 local o = vim.o
 
+-- vim.g.codeium_no_map_tab = true
 vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.undofile = true
 vim.opt.swapfile = true
@@ -83,7 +84,7 @@ vim.o.pumheight = 10
 
 vim.g.ftplugin_sql_omni_key = '<C-j>'
 
-vim.opt.mouse = ""
+-- vim.opt.mouse = ""
 
 -- vim.g.netrw_liststyle = 3
 -- vim.g.netrw_banner = 0

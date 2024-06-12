@@ -130,47 +130,47 @@ end
 
 -- Set up autocommands to refresh the signs.
 
--- vim.api.nvim_create_autocmd('BufWinEnter', {
---     group = vim.api.nvim_create_augroup(sign_group_name, { clear = true }),
---     callback = function(args)
---         local bufnr = args.buf
---         -- Only handle normal buffers.
---         if vim.bo[bufnr].bt ~= '' then
---             return true
---         end
---
---         -- Set custom mappings.
---         set_keymaps(bufnr)
---
---         if not marks[bufnr] then
---             marks[bufnr] = {}
---         end
---
---         -- Remove all marks that were deleted.
---         for mark, _ in pairs(marks[bufnr]) do
---             if vim.api.nvim_buf_get_mark(bufnr, mark)[1] == 0 then
---                 delete_mark(mark, bufnr)
---             end
---         end
---
---         -- Register the letter marks.
---         for _, data in ipairs(vim.fn.getmarklist()) do
---             local mark = data.mark:sub(2, 3)
---             local mark_buf, mark_line = unpack(data.pos)
---             local cached_mark = marks[bufnr][mark]
---
---             if mark_buf == bufnr and is_uppercase_mark(mark) and (not cached_mark or mark_line ~= cached_mark.line) then
---                 register_mark(mark, bufnr, mark_line)
---             end
---         end
---         for _, data in ipairs(vim.fn.getmarklist '%') do
---             local mark = data.mark:sub(2, 3)
---             local mark_line = data.pos[2]
---             local cached_mark = marks[bufnr][mark]
---
---             if is_lowercase_mark(mark) and (not cached_mark or mark_line ~= cached_mark.line) then
---                 register_mark(mark, bufnr, mark_line)
---             end
---         end
---     end,
--- })
+vim.api.nvim_create_autocmd('BufWinEnter', {
+    group = vim.api.nvim_create_augroup(sign_group_name, { clear = true }),
+    callback = function(args)
+        local bufnr = args.buf
+        -- Only handle normal buffers.
+        if vim.bo[bufnr].bt ~= '' then
+            return true
+        end
+
+        -- Set custom mappings.
+        set_keymaps(bufnr)
+
+        if not marks[bufnr] then
+            marks[bufnr] = {}
+        end
+
+        -- Remove all marks that were deleted.
+        for mark, _ in pairs(marks[bufnr]) do
+            if vim.api.nvim_buf_get_mark(bufnr, mark)[1] == 0 then
+                delete_mark(mark, bufnr)
+            end
+        end
+
+        -- Register the letter marks.
+        for _, data in ipairs(vim.fn.getmarklist()) do
+            local mark = data.mark:sub(2, 3)
+            local mark_buf, mark_line = unpack(data.pos)
+            local cached_mark = marks[bufnr][mark]
+
+            if mark_buf == bufnr and is_uppercase_mark(mark) and (not cached_mark or mark_line ~= cached_mark.line) then
+                register_mark(mark, bufnr, mark_line)
+            end
+        end
+        for _, data in ipairs(vim.fn.getmarklist '%') do
+            local mark = data.mark:sub(2, 3)
+            local mark_line = data.pos[2]
+            local cached_mark = marks[bufnr][mark]
+
+            if is_lowercase_mark(mark) and (not cached_mark or mark_line ~= cached_mark.line) then
+                register_mark(mark, bufnr, mark_line)
+            end
+        end
+    end,
+})

@@ -13,6 +13,8 @@ return {
     { "<leader>:",      "<cmd>Telescope commands<CR>",   desc = "Find a string", silent = true },
     { "<leader>fh",     "<cmd>Telescope help_tags<CR>",  desc = "Help",          silent = true },
     { "<leader>fg",     "<cmd>Telescope git_status<CR>", desc = "Find Git",      silent = true },
+    { "<leader>fb",     "<cmd>Telescope buffers<CR>", desc = "Find Git",      silent = true },
+    { "<leader>fy",     "<cmd>Telescope registers<CR>", desc = "Find Git",      silent = true },
     { ",r",             "<cmd>Telescope resume<CR>",     desc = "resume",        silent = true },
   },
   config = function()
@@ -44,6 +46,7 @@ return {
         },
         layout_config = {
           horizontal = {
+            -- preview_width = 0.5,
             preview_width = 0,
             results_width = 0.8,
           },

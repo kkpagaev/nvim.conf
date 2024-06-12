@@ -89,12 +89,12 @@ end
 
 
 local function open()
-  vim.o.winbar = "%{%v:lua.tabline()%}"
+  -- vim.o.winbar = "%{%v:lua.tabline()%}"
   -- vim.o.statusline = "%{%v:lua.tabline()%}"
 end
 
 local function close()
-  vim.o.winbar = ""
+  -- vim.o.winbar = ""
   -- vim.o.statusline = ""
 end
 
