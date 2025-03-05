@@ -36,13 +36,41 @@ return {
       defaults = {
         -- path_display = { 'smart' },
         -- file_ignore_patterns = { '.git' },
-        file_ignore_patterns = { "%pnpm-lock.yaml", "snippet/", "snippets/", "%package-lock.json", "target/", ".obsidian/", ".git/", ".cache", "%.out", "%.class",
+        file_ignore_patterns = { "solutions/", "%pnpm-lock.yaml", "snippet/", "snippets/", "%package-lock.json", "target/", ".obsidian/", ".git/", ".cache", "%.out", "%.class",
           "%.ico", "%.pdf", "%.mkv", "%.ttf", "%.woff", "%.eot", "%.svg", '%.webp', '%.png', "%.mp4", "%.zip", "yarn.lock", ".yarn/", ".vscode/" },
         mappings = {
-          i = {
+              i = {
+            ['<c-space>'] = 'to_fuzzy_refine',
+            ['<c-g>'] = function(prompt_bufnr)
+              local action_state = require('telescope.actions.state')
+              local current_picker = action_state.get_current_picker(prompt_bufnr)
+              if not current_picker then
+                print 'No active Telescope picker'
+                return
+              end
+
+              local results = {}
+              for entry in current_picker.manager:iter() do
+                table.insert(results, entry)
+              end
+
+              local search_dirs = {}
+              for _, subtable in ipairs(results) do
+                if subtable.path then -- Check if the 'path' property exists
+                  table.insert(search_dirs, subtable.path)
+                end
+              end
+
+              require('telescope.builtin').live_grep { search_dirs = search_dirs }
+            end,
+            opts = {
+              -- nowait = true,
+              -- silent = true,
+              desc = 'Live grep on results',
+            },
             ["<esc>"] = actions.close,
             ["<C-t>"] = actions.send_to_qflist + actions.open_qflist
-          }
+          },
         },
         layout_config = {
           horizontal = {

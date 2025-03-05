@@ -30,7 +30,6 @@ return {
       }
     })
 
-    -- local winbar = require("markbar.winbar")
 
     vim.keymap.set('v', '<leader>h', function()
       require("harpoon.ui").toggle_quick_menu()

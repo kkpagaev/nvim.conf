@@ -1,6 +1,8 @@
 -- local theme = "vesper"
 -- local theme = "MountainDew"
 local theme = "gruvbox"
+-- local theme = "reddish"
+-- local theme = "zenbones"
 -- local theme = "kanagawa"
 -- local theme = "kanagawa-dragon"
 
@@ -16,6 +18,19 @@ local theme = "gruvbox"
 -- local theme = "moonbow"
 
 local themes = {
+  reddish = {
+    "paulfrische/reddish.nvim"
+  },
+  zenbones = {
+   "mcchrish/zenbones.nvim",
+   dependencies = {
+     "rktjmp/lush.nvim"
+   },
+   config = function()
+     vim.o.background = "light"
+
+   end
+  },
   vesper = {
     'datsfilipe/vesper.nvim',
   },
@@ -62,11 +77,8 @@ local themes = {
             PmenuThumb = { bg = t.ui.bg_p2 },
             NormalDark = { fg = t.ui.fg_dim, bg = t.ui.bg_m3 },
 
-            -- Popular plugins that open floats will link to NormalFloat by default;
-            -- set their background accordingly if you wish to keep them dark and borderless
             LazyNormal = { bg = t.ui.bg_m3, fg = t.ui.fg_dim },
             MasonNormal = { bg = t.ui.bg_m3, fg = t.ui.fg_dim },
-
           }
         end,
       })

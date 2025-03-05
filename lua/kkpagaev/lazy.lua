@@ -13,6 +13,10 @@ vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
   {
+    "junegunn/vim-peekaboo",
+    lazy = false,
+  },
+  {
     "nvim-tree/nvim-web-devicons",
     lazy = true,
     -- event = "VeryLazy",
@@ -108,7 +112,7 @@ local plugins = {
   {
     "mhartington/formatter.nvim",
     event = "BufWritePre",
-    lazy = true,
+    lazy = false,
     config = function()
       require("plugins.config.formatter")
     end
@@ -224,7 +228,7 @@ local plugins = {
     lazy = true,
     keys = {
       {
-        "<leader>t", "<CMD>TroubleToggle<CR>"
+        "<leader>t", "<CMD>Trouble diagnostics toggle<CR>"
       }
     },
     opts = {},
@@ -234,13 +238,13 @@ local plugins = {
     lazy = false,
     opts = {}
   },
-  {
-    'windwp/nvim-autopairs',
-    lazy = true,
-    event = "InsertEnter",
-    opts = {
-    },
-  },
+  -- {
+  --   'windwp/nvim-autopairs',
+  --   lazy = true,
+  --   event = "InsertEnter",
+  --   opts = {
+  --   },
+  -- },
   {
     "kylechui/nvim-surround",
     -- event = "InsertEnter",

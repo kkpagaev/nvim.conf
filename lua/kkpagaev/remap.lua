@@ -90,7 +90,7 @@ map('n', '<leader>d', ':TSToolsRemoveUnused<CR>')
 map('n', 'go', '<C-o>')
 map('n', 'gi', '<C-i>')
 map('n', 'gu', 'gi')
-map('n', '<C-i>', '<C-i>')
+-- map('n', '<C-i>', '<C-i>')
 
 map('n', "yf", 'jgg"+yG<c-o>k')
 
@@ -145,7 +145,6 @@ vim.keymap.set({"n", "i"}, "<M-n>", "'n")
 vim.keymap.set({"n", "i"}, "<M-s>", "'s")
 
 
-require('kkpagaev.awesome')
 vim.keymap.set("n", "]g", vim.diagnostic.goto_next)
 vim.keymap.set("n", "[g", vim.diagnostic.goto_prev)
 --
@@ -192,3 +191,6 @@ vim.cmd([[au FileType netrw nmap <buffer> a %]])
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+
+vim.keymap.set("n", "<C-e>", "<C-I>zz")
+vim.keymap.set("n", "<C-o>", "<C-o>zz")

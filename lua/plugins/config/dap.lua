@@ -59,8 +59,8 @@ for _, language in ipairs({ "typescript", "javascript" }) do
       request = "attach",
       name = "Attach",
       processId = function()
-        -- require 'dap.utils'.pick_process({filter = "pnpm run start:debug"})
-        require 'dap.utils'.pick_process()
+        require 'dap.utils'.pick_process({ filter = "node" })
+        -- require 'dap.utils'.pick_process()
       end,
       cwd = "${workspaceFolder}",
     }
@@ -85,25 +85,31 @@ require("dap").configurations.svelte = { -- change this to javascript if needed
 
 
 require("dap").configurations.vue = { -- change this to javascript if needed
-  {
-    name = "Debug (Attach) - Remote",
-    type = "chrome",
-    request = "attach",
-    port = 9222,
-    webRoot = "${workspaceFolder}",
-  }
+      {
+      type = "pwa-chrome",
+      request = "attach",
+      name = "Attach Program (pwa-chrome, select port)",
+      protocol = "inspector",
+      program = "${file}",
+      cwd = vim.fn.getcwd(),
+      sourceMaps = true,
+      port = 9222,
+      webRoot = "${workspaceFolder}",
+    },
 }
 
 require("dap").configurations.typescriptreact = { -- change this to javascript if needed
-  {
-    name = "Debug (Attach) - Remote",
-    type = "chrome",
-    request = "attach",
-    sourceMaps = true,
-    trace = true,
-    port = 9222,
-    webRoot = "${workspaceFolder}"
-  }
+      {
+      type = "pwa-chrome",
+      request = "attach",
+      name = "Attach Program (pwa-chrome, select port)",
+      protocol = "inspector",
+      program = "${file}",
+      cwd = vim.fn.getcwd(),
+      sourceMaps = true,
+      port = 9222,
+      webRoot = "${workspaceFolder}",
+    },
 }
 
 

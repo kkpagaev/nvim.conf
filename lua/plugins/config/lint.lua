@@ -9,7 +9,6 @@
 -- })
 
 -- local null_ls = require("null-ls")
---
 -- null_ls.builtins.lint.eslint_d.with({
 --   extra_filetypes = { 'vue', 'astro', 'typescript', 'javascript', 'typescriptreact', 'javascriptreact' },
 -- })
