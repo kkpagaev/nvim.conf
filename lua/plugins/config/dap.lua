@@ -28,22 +28,22 @@ vim.keymap.set({ 'n', 't' }, '<C-c>', function() require "dap".step_over() end)
 vim.keymap.set({ 'n', 't' }, "<C-r>", function() require "dap".step_into() end)
 vim.keymap.set({ 'n', 't' }, "<C-l>", function() require "dap".step_out() end)
 
-vim.keymap.set({ "n", "i", "t" }, '<Left>', function()
-  local bufname = vim.fn.expand("%:r")
-  print(bufname)
-  if bufname ~= "[dap-repl]" then
-    -- require("dapui").toggle()
-    vim.cmd("DapToggleRepl")
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>j", true, true, true), "n", true)
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("i", true, true, true), "n", true)
-  else
-    -- require("dapui").toggle()
-    vim.cmd("DapToggleRepl")
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<esc>", true, true, true), "n", true)
-    -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>j", true, true, true), "n", true)
-  end
-  -- focus_buffer("[dap-repl]")
-end)
+-- vim.keymap.set({ "n", "i", "t" }, '<Left>', function()
+--   local bufname = vim.fn.expand("%:r")
+--   print(bufname)
+--   if bufname ~= "[dap-repl]" then
+--     -- require("dapui").toggle()
+--     vim.cmd("DapToggleRepl")
+--     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>j", true, true, true), "n", true)
+--     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("i", true, true, true), "n", true)
+--   else
+--     -- require("dapui").toggle()
+--     vim.cmd("DapToggleRepl")
+--     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<esc>", true, true, true), "n", true)
+--     -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>j", true, true, true), "n", true)
+--   end
+--   -- focus_buffer("[dap-repl]")
+-- end)
 
 require("dap-vscode-js").setup({
   node_path = "node",                                                                          -- Path of node executable. Defaults to $NODE_PATH, and then "node"

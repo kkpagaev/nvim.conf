@@ -51,7 +51,7 @@ local plugins = {
     lazy = false,
     config = function()
       require("colorizer").setup {
-        filetypes = { "*" },
+        filetypes = { "typescriptreact", "javascriptreact", "vue", "astro" },
         user_default_options = {
           RGB = true,          -- #RGB hex codes
           RRGGBB = true,       -- #RRGGBB hex codes
@@ -79,7 +79,6 @@ local plugins = {
       }
     end
   },
-
   {
     'lewis6991/gitsigns.nvim',
     lazy = false,
@@ -142,40 +141,10 @@ local plugins = {
     end
   },
   {
-    -- snippet plugin
-    "L3MON4D3/LuaSnip",
-    lazy = true,
-    dependencies = "rafamadriz/friendly-snippets",
-    config = function()
-      local luasnip = require 'luasnip'
-      luasnip.setup {
-        { history = true, updateevents = "TextChanged,TextChangedI" },
-      }
-
-      local loader = require("luasnip.loaders.from_snipmate")
-      loader.lazy_load()
-      --
-      loader.lazy_load({ paths = { "./snippets" } })
-
-      vim.api.nvim_create_autocmd("InsertLeave", {
-        callback = function()
-          if
-              require("luasnip").session.current_nodes[vim.api.nvim_get_current_buf()]
-              and not require("luasnip").session.jump_active
-          then
-            require("luasnip").unlink_current()
-          end
-        end,
-      })
-    end,
-  },
-  {
     'hrsh7th/nvim-cmp',
     event = "InsertEnter",
     dependencies = {
-      "L3MON4D3/LuaSnip",
       'hrsh7th/cmp-nvim-lsp',
-      "saadparwaiz1/cmp_luasnip",
       'hrsh7th/cmp-buffer',
     },
     config = function()
@@ -196,43 +165,39 @@ local plugins = {
       title = true
     }
   },
-  {
-    'mfussenegger/nvim-dap',
-    keys = {
-      "<C-g>",
-      "<C-c>",
-      "<C-r>",
-      "<C-l>",
-    },
-    dependencies = {
-      "rcarriga/cmp-dap",
-      "leoluz/nvim-dap-go",
-      {
-        "theHamsta/nvim-dap-virtual-text",
-        opts = {}
-      },
-      { "mxsdev/nvim-dap-vscode-js", dependencies = { "mfussenegger/nvim-dap" } },
-      -- "jlcrochet/vim-crystal",
-    },
-    lazy = true,
-    config = function()
-      require("plugins.config.dap")
-    end
-  },
-  {
-    "petertriho/nvim-scrollbar",
-    opts = {}
-  },
-  {
-    "folke/trouble.nvim",
-    lazy = true,
-    keys = {
-      {
-        "<leader>t", "<CMD>Trouble diagnostics toggle<CR>"
-      }
-    },
-    opts = {},
-  },
+  -- {
+  --   'mfussenegger/nvim-dap',
+  --   keys = {
+  --     "<C-g>",
+  --     "<C-c>",
+  --     "<C-r>",
+  --     "<C-l>",
+  --   },
+  --   dependencies = {
+  --     "rcarriga/cmp-dap",
+  --     "leoluz/nvim-dap-go",
+  --     {
+  --       "theHamsta/nvim-dap-virtual-text",
+  --       opts = {}
+  --     },
+  --     { "mxsdev/nvim-dap-vscode-js", dependencies = { "mfussenegger/nvim-dap" } },
+  --     -- "jlcrochet/vim-crystal",
+  --   },
+  --   lazy = true,
+  --   config = function()
+  --     require("plugins.config.dap")
+  --   end
+  -- },
+  -- {
+  --   "folke/trouble.nvim",
+  --   lazy = true,
+  --   keys = {
+  --     {
+  --       "<leader>t", "<CMD>Trouble diagnostics toggle<CR>"
+  --     }
+  --   },
+  --   opts = {},
+  -- },
   {
     'nacro90/numb.nvim',
     lazy = false,
@@ -265,28 +230,7 @@ local plugins = {
     end
   },
 
-  -- {
-  --   "axelvc/template-string.nvim",
-  --   config = function()
-  --     require('template-string').setup({
-  --       filetypes = { 'vue', 'astro', 'typescript', 'javascript', 'typescriptreact', 'javascriptreact' }, -- filetypes where the plugin is active
-  --       jsx_brackets = true,                                                                              -- must add brackets to jsx attributes
-  --       remove_template_string = false,                                                                   -- remove backticks when there are no template string
-  --       restore_quotes = {
-  --         -- quotes used when "remove_template_string" option is enabled
-  --         normal = [[']],
-  --         jsx = [["]],
-  --       },
-  --     })
-  --   end
-  -- },
-  -- {
-  --   "vimwiki/vimwiki",
-  --   event = "BufEnter *.md",
-  -- },
-  -- "andythigpen/nvim-coverage",
-  --
-  "tpope/vim-rsi",
+  -- "tpope/vim-rsi",
   {
     "Exafunction/codeium.vim",
     lazy = false
@@ -370,15 +314,6 @@ local plugins = {
     end
   },
   {
-     'tpope/vim-dadbod', lazy = true,
-  dependencies = {
-    { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' } },
-  },
-  cmd = {
-    'DB',
-  }
-},
-  {
     "danymat/neogen",
     lazy = true,
     keys = { {"<leader>na", "<cmd>Neogen func<cr>"}, {"<leader>nt", "<cmd>Neogen type<cr>"}},
@@ -419,6 +354,20 @@ local plugins = {
       })
     end
   },
+--   {
+--     "vhyrro/luarocks.nvim",
+--     priority = 1001, -- this plugin needs to run before anything else
+--     opts = {
+--         rocks = { "magick" },
+--     },
+-- },
+--   {
+--     "3rd/image.nvim",
+--     build = false, -- so that it doesn't build the rock https://github.com/3rd/image.nvim/issues/91#issuecomment-2453430239
+--     opts = {},
+--     dependencies = { "vhyrro/luarocks.nvim" },
+--     filetypes = { "image_nvim" },
+--   },
 --   {
 --   'nvimdev/dashboard-nvim',
 --   event = 'VimEnter',

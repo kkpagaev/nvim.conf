@@ -161,8 +161,8 @@ vim.keymap.set("n", "N", "Nzzzv")
 
 vim.cmd([[nmap + %]])
 vim.cmd([[vmap + %]])
--- vim.keymap.set("n", "+", "%")
--- vim.keymap.set("v", "+", "%")
+vim.keymap.set("n", "+", "%")
+vim.keymap.set("v", "+", "%")
 
 vim.api.nvim_set_keymap('n', '<Leader>e', [[:sil lua CheckAndOpen()<CR>]], {silent = true})
 -- vim.cmd([[map <silent> <Leader>e :Ex <bar> :sil! /<C-R>=expand("%:t")<CR><CR>]])

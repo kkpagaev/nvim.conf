@@ -11,11 +11,6 @@ cmp.setup {
   -- completion = {
   --   completeopt = "menu,menuone",
   -- },
-  snippet = {
-    expand = function(args)
-      require("luasnip").lsp_expand(args.body)
-    end,
-  },
   window = {
     documentation = cmp.config.window.bordered(),
   },
@@ -45,8 +40,6 @@ cmp.setup {
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace })
-      elseif require('luasnip').expand_or_jumpable() then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
       else
         fallback()
       end
@@ -57,7 +50,6 @@ cmp.setup {
   },
   sources = {
     { name = 'nvim_lsp', priority = 1000 },
-    { name = "luasnip" },
     { name = 'path' },
     { name = 'buffer', priority = 1 },
   },
