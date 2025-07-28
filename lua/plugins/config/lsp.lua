@@ -66,40 +66,12 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
 
--- capabilities.textDocument.completion.completionItem.snippetSupport = true
--- capabilities.textDocument.completion.completionItem.preselectSupport = true
--- capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
--- capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
--- capabilities.textDocument.completion.completionItem.deprecatedSupport = true
--- capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
--- capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
-
--- capabilities.textDocument.completion.completionItem.resolveSupport = {
---   properties = {
---     'documentation',
---     'detail',
---     'additionalTextEdits',
---   }
--- }
--- -- capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
 require('mason').setup()
 
 local mason_lspconfig = require 'mason-lspconfig'
 
-mason_lspconfig.setup {}
-mason_lspconfig.setup_handlers {
-  function(server_name)
-    if server_name == 'tsserver' then
-      return
-    else
-      require('lspconfig')[server_name].setup {
-        capabilities = capabilities,
-        on_attach = on_attach,
-        settings = servers[server_name],
-      }
-    end
-  end,
+mason_lspconfig.setup {
+  automatic_enable = false
 }
 
 local sources = {
@@ -255,3 +227,10 @@ local location = data_path.."/mason/packages/vue-language-server/node_modules/@v
 --   on_attach = on_attach,
 --   root_dir = nvim_lsp.util.root_pattern(".nuxt.config.ts", ".git"),
 -- }
+
+require 'lspconfig'.hls.setup {
+  -- cmd = { "haskell-language-server-wrapper-2.10.0.0" },
+  capabilities = capabilities,
+  on_attach = on_attach,
+  filetypes = { 'haskell', 'lhaskell', 'cabal' },
+}

@@ -18,6 +18,9 @@ local theme = "gruvbox"
 -- local theme = "moonbow"
 
 local themes = {
+  automata = {
+    "XadillaX/vim-automata-theme"
+  },
   reddish = {
     "paulfrische/reddish.nvim"
   },

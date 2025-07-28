@@ -1,4 +1,31 @@
+local dm = require("debugmaster")
+-- make sure you don't have any other keymaps that starts with "<leader>d" to avoid delay
+-- Alternative keybindings to "<leader>d" could be: "<leader>m", "<leader>;"
+vim.keymap.set({ "n", "v" }, "<leader>d", dm.mode.toggle, { nowait = true })
+-- If you want to disable debug mode in addition to leader+d using the Escape key:
+-- vim.keymap.set("n", "<Esc>", dm.mode.disable)
+-- This might be unwanted if you already use Esc for ":noh"
+vim.keymap.set("t", "<C-\\>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+
+dm.plugins.osv_integration.enabled = true -- needed if you want to debug neovim lua code
+
 local dap = require('dap')
+local dapui = require('dapui')
+
+dapui.setup()
+--
+-- dap.listeners.before.attach.dapui_config = function()
+--   dapui.open()
+-- end
+-- dap.listeners.before.launch.dapui_config = function()
+--   dapui.open()
+-- end
+-- dap.listeners.before.event_terminated.dapui_config = function()
+--   dapui.close()
+-- end
+-- dap.listeners.before.event_exited.dapui_config = function()
+--   dapui.close()
+-- end
 
 local function map(m, k, v)
   vim.keymap.set(m, k, v, { silent = true })
@@ -17,9 +44,9 @@ vim.fn.sign_define('DapStopped',
 vim.keymap.set('n', '<M-b>',
   function() require "dap".toggle_breakpoint() end)
 
-vim.keymap.set('n', '<leader>cb',
-  function() require "dap".clear_breakpoints() end)
-
+-- vim.keymap.set('n', '<leader>cb',
+--   function() require "dap".clear_breakpoints() end)
+--
 
 vim.keymap.set({ 'n', 't' }, '<C-g>', function()
   require "dap".continue()
@@ -67,10 +94,11 @@ for _, language in ipairs({ "typescript", "javascript" }) do
   }
 end
 
-dap.adapters.chrome = {
+dap.adapters['pwa-chrome'] = {
   type = "executable",
   command = "node",
-  args = { os.getenv("HOME") .. "/.local/share/nvim/mason/packages/chrome-debug-adapter/out/src/chromeDebug.js" },
+  port = "${port}",
+  args = { os.getenv("HOME") .. "/.local/share/nvim/mason/packages/chrome-debug-adapter/out/src/chromeDebug.js", "${port}" },
 }
 
 require("dap").configurations.svelte = { -- change this to javascript if needed

@@ -51,7 +51,7 @@ local plugins = {
     lazy = false,
     config = function()
       require("colorizer").setup {
-        filetypes = { "typescriptreact", "javascriptreact", "vue", "astro" },
+        filetypes = { "typescriptreact", "javascriptreact", "vue", "astro", "conf", "kitty" },
         user_default_options = {
           RGB = true,          -- #RGB hex codes
           RRGGBB = true,       -- #RRGGBB hex codes
@@ -165,29 +165,50 @@ local plugins = {
       title = true
     }
   },
-  -- {
-  --   'mfussenegger/nvim-dap',
-  --   keys = {
-  --     "<C-g>",
-  --     "<C-c>",
-  --     "<C-r>",
-  --     "<C-l>",
-  --   },
-  --   dependencies = {
-  --     "rcarriga/cmp-dap",
-  --     "leoluz/nvim-dap-go",
-  --     {
-  --       "theHamsta/nvim-dap-virtual-text",
-  --       opts = {}
-  --     },
-  --     { "mxsdev/nvim-dap-vscode-js", dependencies = { "mfussenegger/nvim-dap" } },
-  --     -- "jlcrochet/vim-crystal",
-  --   },
-  --   lazy = true,
-  --   config = function()
-  --     require("plugins.config.dap")
-  --   end
-  -- },
+  {
+    'mfussenegger/nvim-dap',
+    keys = {
+      "<C-g>",
+      "<C-c>",
+      "<C-r>",
+      "<C-l>",
+    },
+    dependencies = {
+       "miroshQa/debugmaster.nvim",
+      "rcarriga/cmp-dap",
+      "leoluz/nvim-dap-go",
+      "rcarriga/nvim-dap-ui",
+      "mfussenegger/nvim-dap", "jbyuki/one-small-step-for-vimkind",
+      "nvim-neotest/nvim-nio",
+      {
+        "theHamsta/nvim-dap-virtual-text",
+        opts = {}
+      },
+      { "mxsdev/nvim-dap-vscode-js", dependencies = { "mfussenegger/nvim-dap" } },
+      -- "jlcrochet/vim-crystal",
+    },
+    lazy = true,
+    config = function()
+      require("plugins.config.dap")
+    end
+  },
+   {
+  "LunarVim/bigfile.nvim",
+  -- enabled = false,
+  event = "BufReadPre",
+  opts = {
+    features = { -- features to disable
+      -- "filetype",
+      "illuminate",
+      "indent_blankline",
+      "lsp",
+      "matchparen",
+      "syntax",
+      "treesitter",
+      -- "vimopts",
+    },
+  },
+},
   -- {
   --   "folke/trouble.nvim",
   --   lazy = true,
@@ -230,11 +251,6 @@ local plugins = {
     end
   },
 
-  -- "tpope/vim-rsi",
-  {
-    "Exafunction/codeium.vim",
-    lazy = false
-  },
   {
     "jose-elias-alvarez/null-ls.nvim",
     config = function()
