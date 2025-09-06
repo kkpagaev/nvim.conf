@@ -332,19 +332,3 @@ vim.keymap.set("n", "<leader>pp", function()
   colors()
 
 end)
-
--- vim.api.nvim_create_autocmd("VimEnter", {
---   callback = function()
---     if not root then
---       return
---     end
---
---     vim.api.nvim_set_current_dir(root)
---     print(root)
---   end,
--- })
-
--- Define your table
-
--- Open a file in write mode
-

@@ -1,6 +1,8 @@
 -- local theme = "vesper"
 -- local theme = "MountainDew"
-local theme = "gruvbox"
+-- local theme = "gruvbox"
+-- local theme = "nier_automata"
+local theme = require('current-theme')
 -- local theme = "reddish"
 -- local theme = "zenbones"
 -- local theme = "kanagawa"
@@ -159,7 +161,7 @@ local themes = {
 -- "xiyaowong/transparent.nvim",
 -- "luisiacc/gruvbox-baby",
 -- "Everblush/nvim"
-local current_theme = themes[theme] or themes.kanagawa
+local current_theme = themes[theme] or {"rebelot/kanagawa.nvim"}
 
 local conf = function(callback)
     if callback ~= nil then
@@ -186,8 +188,16 @@ local conf = function(callback)
 end
 
 local con = current_theme["config"]
+
 current_theme["config"] = function()
+
+  if con == nil then
+    vim.cmd("colorscheme " .. theme)
+    return
+  end
+  --
   conf(con)
+-- vim.cmd("colorscheme kikisen")
 end
 
 current_theme["lazy"] = false

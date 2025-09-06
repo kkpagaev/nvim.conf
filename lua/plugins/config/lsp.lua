@@ -96,55 +96,6 @@ require('fidget').setup({
   }
 })
 
--- require 'lspconfig'.crystalline.setup {
---   capabilities = capabilities,
---   on_attach = on_attach,
--- }
-
--- require 'lspconfig'.solargraph.setup {
---   capabilities = capabilities,
---   on_attach = on_attach,
---
---   root_dir = nvim_lsp.util.root_pattern(".rubocop.yml", ".git"),
---   settings = {
---     -- solargraph = {
---     --   diagnostics = true
---     -- }
---   },
--- }
-
-require('lspconfig')['yamlls'].setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-  settings = {
-    yaml = {
-      schemastore = {
-        enable = true
-      },
-      trace = {
-        server = "verbose"
-      },
-      schemas = {
-        -- kubernetes = "/*.yaml",
-        -- ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*"
-        -- kubernetes = "*.k8s.yaml",
-      }
-    }
-  }
-}
-
--- require("lspconfig").emmet_ls.setup({
---   capabilities = capabilities,
---   on_attach = on_attach,
---   filetypes = { "astro", "vue", "elixir", "eelixir", "heex" },
---   init_options = {
---     userLanguages = {
---       elixir = "html-eex",
---       eelixir = "html-eex",
---       heex = "html-eex",
---     },
---   },
--- })
 
 require 'lspconfig'.tailwindcss.setup {
   filetypes = { "astro", "vue", "elixir", "eelixir", "heex" },
@@ -186,19 +137,6 @@ require("typescript-tools").setup {
   },
 }
 
--- require 'lspconfig'.sqls.setup {
---   settings = {
---     sqls = {
---       connections = {
---         {
---           driver = 'postgresql',
---           dataSourceName = 'host=127.0.0.1 port=1252 user=user password=user dbname=user',
---         },
---       },
---     },
---   },
--- }
-
 require 'lspconfig'.eslint.setup({
   on_attach = function(client, bufnr)
     vim.api.nvim_create_autocmd("BufWritePre", {
@@ -210,23 +148,6 @@ require 'lspconfig'.eslint.setup({
 
 local data_path = vim.fn.stdpath('data')
 local location = data_path.."/mason/packages/vue-language-server/node_modules/@vue/language-server"
-
--- require 'lspconfig'.volar.setup {
---   init_options = {
---           vue = {
---         -- disable hybrid mode
---         hybridMode = false,
---       },
---
---   },
---   filetypes = {
---     "javascript",
---     "typescript",
---     "vue",
---   },
---   on_attach = on_attach,
---   root_dir = nvim_lsp.util.root_pattern(".nuxt.config.ts", ".git"),
--- }
 
 require 'lspconfig'.hls.setup {
   -- cmd = { "haskell-language-server-wrapper-2.10.0.0" },

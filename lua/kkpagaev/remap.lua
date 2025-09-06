@@ -11,10 +11,6 @@ g.mapleader = " "
 g.maplocalleader = " "
 
 map('n', "<leader>", "")
--- map('v', "j", "h")
--- map('v', "h", "j")
---
--- map('v', "H", "j")
 map('i', "<M-d>", "<C-d>")
 map('i', "<M-u>", "<C-u>")
 
@@ -29,25 +25,6 @@ local function buf_vtext()
   vim.fn.setreg('a', a_orig)
   return text
 end
-
-local function zod_to_json()
-  -- if vim.fn.visualmode() ~= 'V' and vim.fn.visualmode() ~= 'v' then
-  --     print("Not in Visual mode")
-  --     return
-  -- end
-
-  local selected_text = buf_vtext()
-  local res = vim.fn.system("ztj", selected_text)
-  local jq = vim.fn.system("jq -r", res)
-  vim.fn.system("clip", jq)
-  -- exit to normal 
-
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'n', true)
-
-  print(res)
-end
-
--- vim.keymap.set('v', ',', zod_to_json, { noremap = true, silent = true })
 
 map('i', "<C-BS>", "<C-w>")
 map('i', "<C-g>", "<C-o>")
@@ -70,15 +47,11 @@ vim.api.nvim_set_keymap('n', ",d", ':q<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '>', '>>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<', '<<', { noremap = true })
 
--- vim.keymap.set("n", "<leader>s", [[:s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 vim.keymap.set("n", "<leader>s", [[:s/\<<C-r><C-w>\>//gI<Left><Left><Left>]])
 vim.keymap.set("n", "<leader>S", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
-
--- quickfix
 map('n', "<leader>q", ":copen<cr>")
 
-map('n', '<leader>l', ':Format<CR>')
 map('n', '<leader>i', ':TSToolsAddMissingImports<CR>')
 
 map('n', ',h', 'yiwoconsole.log(<esc>pa);<esc>V')
@@ -199,8 +172,6 @@ vim.cmd([[au FileType netrw nmap <buffer> h -]])
 vim.cmd([[au FileType netrw nmap <buffer> n <CR>]])
 vim.cmd([[au FileType netrw nmap <buffer> a %]])
 
-
--- au FileType netrw nmap <buffer> <left> -
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")

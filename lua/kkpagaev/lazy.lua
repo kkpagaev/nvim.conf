@@ -13,8 +13,12 @@ vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
   {
-    "junegunn/vim-peekaboo",
+    "echasnovski/mini.pick",
     lazy = false,
+    keys = {
+      { "<leader>u", "<CMD>Pick files<CR>" },
+      { "<leader>fh", "<CMD>Pick help<CR>" },
+    }
   },
   {
     "nvim-tree/nvim-web-devicons",
@@ -45,13 +49,12 @@ local plugins = {
       { "gb",   mode = "v" },
     },
   },
-
   {
     "NvChad/nvim-colorizer.lua",
     lazy = false,
     config = function()
       require("colorizer").setup {
-        filetypes = { "typescriptreact", "javascriptreact", "vue", "astro", "conf", "kitty" },
+        filetypes = { "lua", "css", "typescriptreact", "javascriptreact", "vue", "astro", "conf", "kitty" },
         user_default_options = {
           RGB = true,          -- #RGB hex codes
           RRGGBB = true,       -- #RRGGBB hex codes
@@ -165,33 +168,33 @@ local plugins = {
       title = true
     }
   },
-  {
-    'mfussenegger/nvim-dap',
-    keys = {
-      "<C-g>",
-      "<C-c>",
-      "<C-r>",
-      "<C-l>",
-    },
-    dependencies = {
-       "miroshQa/debugmaster.nvim",
-      "rcarriga/cmp-dap",
-      "leoluz/nvim-dap-go",
-      "rcarriga/nvim-dap-ui",
-      "mfussenegger/nvim-dap", "jbyuki/one-small-step-for-vimkind",
-      "nvim-neotest/nvim-nio",
-      {
-        "theHamsta/nvim-dap-virtual-text",
-        opts = {}
-      },
-      { "mxsdev/nvim-dap-vscode-js", dependencies = { "mfussenegger/nvim-dap" } },
-      -- "jlcrochet/vim-crystal",
-    },
-    lazy = true,
-    config = function()
-      require("plugins.config.dap")
-    end
-  },
+  -- {
+  --   'mfussenegger/nvim-dap',
+  --   keys = {
+  --     "<C-g>",
+  --     "<C-c>",
+  --     "<C-r>",
+  --     "<C-l>",
+  --   },
+  --   dependencies = {
+  --      "miroshQa/debugmaster.nvim",
+  --     "rcarriga/cmp-dap",
+  --     "leoluz/nvim-dap-go",
+  --     "rcarriga/nvim-dap-ui",
+  --     "mfussenegger/nvim-dap", "jbyuki/one-small-step-for-vimkind",
+  --     "nvim-neotest/nvim-nio",
+  --     {
+  --       "theHamsta/nvim-dap-virtual-text",
+  --       opts = {}
+  --     },
+  --     { "mxsdev/nvim-dap-vscode-js", dependencies = { "mfussenegger/nvim-dap" } },
+  --     -- "jlcrochet/vim-crystal",
+  --   },
+  --   lazy = true,
+  --   config = function()
+  --     require("plugins.config.dap")
+  --   end
+  -- },
    {
   "LunarVim/bigfile.nvim",
   -- enabled = false,
@@ -209,28 +212,11 @@ local plugins = {
     },
   },
 },
-  -- {
-  --   "folke/trouble.nvim",
-  --   lazy = true,
-  --   keys = {
-  --     {
-  --       "<leader>t", "<CMD>Trouble diagnostics toggle<CR>"
-  --     }
-  --   },
-  --   opts = {},
-  -- },
   {
     'nacro90/numb.nvim',
     lazy = false,
     opts = {}
   },
-  -- {
-  --   'windwp/nvim-autopairs',
-  --   lazy = true,
-  --   event = "InsertEnter",
-  --   opts = {
-  --   },
-  -- },
   {
     "kylechui/nvim-surround",
     -- event = "InsertEnter",
@@ -238,8 +224,6 @@ local plugins = {
     keys = { "cs", "ds" },
     opts = {}
   },
-  -- 'mfussenegger/nvim-dap-python',
-  -- "vimpostor/vim-tpipeline",
   {
     "roobert/tailwindcss-colorizer-cmp.nvim",
     -- optionally, override the default options:
@@ -250,7 +234,6 @@ local plugins = {
       })
     end
   },
-
   {
     "jose-elias-alvarez/null-ls.nvim",
     config = function()
@@ -370,37 +353,59 @@ local plugins = {
       })
     end
   },
---   {
---     "vhyrro/luarocks.nvim",
---     priority = 1001, -- this plugin needs to run before anything else
---     opts = {
---         rocks = { "magick" },
---     },
--- },
---   {
---     "3rd/image.nvim",
---     build = false, -- so that it doesn't build the rock https://github.com/3rd/image.nvim/issues/91#issuecomment-2453430239
---     opts = {},
---     dependencies = { "vhyrro/luarocks.nvim" },
---     filetypes = { "image_nvim" },
---   },
---   {
---   'nvimdev/dashboard-nvim',
---   event = 'VimEnter',
---   config = function()
---     require('dashboard').setup {
---       -- config
---       hide = {
---   statusline = true   , -- hide statusline default is true
---   tabline       =true, -- hide the tabline
---   winbar        = true-- hide winbar
--- },
---     }
---   end,
---   dependencies = { {'nvim-tree/nvim-web-devicons'}}
--- }
--- lazy.nvim
-
+  -- {
+  --   "dmtrKovalenko/fff.nvim",
+  --   build = "cargo build --release",
+  --   config = function () 
+  --     require('fff').setup {
+  --       -- UI dimensions and appearance
+  --       width = 0.9,          -- Window width as fraction of screen
+  --       height = 0.9,         -- Window height as fraction of screen
+  --       preview_width = 0,  -- Preview pane width as fraction of picker
+  --       prompt = ' ',       -- Input prompt symbol
+  --       title = 'FFF Files',  -- Window title
+  --       max_results = 60,     -- Maximum search results to display
+  --       max_threads = 4,      -- Maximum threads for fuzzy search
+  --
+  --       keymaps = {
+  --         close = '<C-c>',
+  --         select = '<CR>',
+  --         select_split = '<C-s>',
+  --         select_vsplit = '<C-v>',
+  --         select_tab = '<C-t>',
+  --         move_up = { '<Up>', '<C-p>' },        -- Multiple bindings supported
+  --         move_down = { '<Down>', '<C-n>' },    -- Multiple bindings supported
+  --         preview_scroll_up = '<C-u>',
+  --         preview_scroll_down = '<C-d>',
+  --       },
+  --
+  --       hl = {
+  --         border = 'FloatBorder',
+  --         normal = 'Normal',
+  --         cursor = 'CursorLine',
+  --         matched = 'IncSearch',
+  --         title = 'Title',
+  --         prompt = 'Question',
+  --         active_file = 'Visual',
+  --         frecency = 'Number',
+  --         debug = 'Comment',
+  --       },
+  --
+  --       debug = {
+  --         show_scores = true,  -- We hope for your collaboratio
+  --       },
+  --     }
+  --   end,
+  --   keys = {
+  --     {
+  --       "<leader>ff", -- try it if you didn't it is a banger keybinding for a picker
+  --       function()
+  --         require("fff").toggle()
+  --       end,
+  --       desc = "Toggle FFF",
+  --     },
+  --   }
+  -- },
 }
 
 require("lazy").setup(plugins, {
