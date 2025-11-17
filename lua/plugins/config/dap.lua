@@ -79,17 +79,18 @@ require("dap-vscode-js").setup({
   -- adapters = { 'pwa-node'}, -- which adapters to register in nvim-dap
 })
 
-for _, language in ipairs({ "typescript", "javascript" }) do
+for _, language in ipairs({ "typescript", "javascript", "coffee"}) do
   require("dap").configurations[language] = {
     {
-      type = "pwa-node",
+      type = "pwa-chrome",
       request = "attach",
-      name = "Attach",
-      processId = function()
-        require 'dap.utils'.pick_process({ filter = "node" })
-        -- require 'dap.utils'.pick_process()
-      end,
-      cwd = "${workspaceFolder}",
+      name = "Attach Program (pwa-chrome, select port)",
+      protocol = "inspector",
+      program = "${file}",
+      cwd = vim.fn.getcwd(),
+      sourceMaps = true,
+      port = 9222,
+      webRoot = "${workspaceFolder}",
     }
   }
 end

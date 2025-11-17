@@ -16,7 +16,7 @@ o.inccommand = "split"
 o.tabstop = 2
 o.expandtab = true
 o.softtabstop = 2
-o.shiftwidth = 2
+o.shiftwidth = 4
 o.wrap = true
 o.shortmess = o.shortmess .. "at"
 

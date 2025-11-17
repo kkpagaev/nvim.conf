@@ -20,7 +20,6 @@ return {
       ensure_installed = { "yaml", "go", "tsx", "lua", "json", "graphql", "regex", "vim", "markdown", "markdown_inline", "dockerfile", "prisma", "vue",
 
       "vimdoc", "luadoc", "vim", "lua", "markdown"
-
     },
       -- ensure_installed = {'c', 'cpp', 'bash', 'lua', 'vim', 'python', 'c_sharp', 'git_rebase', 'git_config', 'gitignore'}
 

@@ -66,6 +66,8 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
 
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
 require('mason').setup()
 
 local mason_lspconfig = require 'mason-lspconfig'
@@ -97,23 +99,43 @@ require('fidget').setup({
 })
 
 
-require 'lspconfig'.tailwindcss.setup {
-  filetypes = { "astro", "vue", "elixir", "eelixir", "heex" },
-  init_options = {
-    userLanguages = {
-      elixir = "html-eex",
-      eelixir = "html-eex",
-      heex = "html-eex",
-    },
+vim.lsp.config.tailwindcss = {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = { 
+    "astro",
+    "vue",
+    "elixir",
+    "eelixir",
+    "heex",
+    "javascriptreact",
+    "typescriptreact",
+    "html"
   },
+  init_options = {},
   settings = {
-    tailwindCSS = {
-      experimental = {
-        classRegex = {
-          'class[:]\\s*"([^"]*)"',
-        },
-      },
-    },
+    -- "tailwindCSS.files.exclude" = {
+    --   "**/.git/**",
+    --   "**/node_modules/**",
+    --   "**/.hg/**",
+    --   "tmp/**",
+    --   "public/**",
+    --   "coverage/**"
+    -- },
+    --
+    --
+    -- "tailwindCSS.classAttributes" = {
+    --   "class",
+    --   "className",
+    --   "classNames",
+    --   "variants",
+    --   "defaultVariants"
+    -- },
+    -- "tailwindCSS.experimental.classRegex" = {
+    --   ["cva\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    --   ["cn\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    --   ["cx\\(((?:[^()]|\\([^()]*\\))*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+    -- }
   },
 }
 
@@ -137,7 +159,7 @@ require("typescript-tools").setup {
   },
 }
 
-require 'lspconfig'.eslint.setup({
+vim.lsp.config.eslint = ({
   on_attach = function(client, bufnr)
     vim.api.nvim_create_autocmd("BufWritePre", {
       buffer = bufnr,
@@ -149,9 +171,28 @@ require 'lspconfig'.eslint.setup({
 local data_path = vim.fn.stdpath('data')
 local location = data_path.."/mason/packages/vue-language-server/node_modules/@vue/language-server"
 
-require 'lspconfig'.hls.setup {
+-- vim.lsp.config.ruby_lsp.setup {
+--   capabilities = capabilities,
+--   on_attach = on_attach,
+-- }
+
+vim.lsp.config.cssls = {
+  capabilities = capabilities,
+  on_attach = on_attach,
+  filetypes = { "css", "scss", "less", "html" }
+}
+
+vim.lsp.config('html', {
+    capabilities = capabilities,
+    on_attach = on_attach,
+})
+
+vim.lsp.config.hls =  {
   -- cmd = { "haskell-language-server-wrapper-2.10.0.0" },
   capabilities = capabilities,
   on_attach = on_attach,
   filetypes = { 'haskell', 'lhaskell', 'cabal' },
 }
+
+vim.lsp.enable('html')
+vim.lsp.enable('tailwindcss')

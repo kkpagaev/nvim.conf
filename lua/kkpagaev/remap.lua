@@ -54,10 +54,6 @@ map('n', "<leader>q", ":copen<cr>")
 
 map('n', '<leader>i', ':TSToolsAddMissingImports<CR>')
 
-map('n', ',h', 'yiwoconsole.log(<esc>pa);<esc>V')
-map('n', ',H', 'yiwOconsole.log(<esc>pa);<esc>')
-map('v', ',', 'yoconsole.log({ <esc>pa });<esc>')
-
 map('n', '<leader>d', ':TSToolsRemoveUnused<CR>')
 
 -- map('n', 'go', '<C-o>')
@@ -87,19 +83,20 @@ map('s', "t", "t")
 map('s', "j", "j")
 map('s', "k", "k")
 vim.keymap.set('n', '<esc>', function() vim.cmd('noh') end, { silent = true })
-vim.keymap.set('n', '<leader>c', function()
-  local file_path = vim.api.nvim_buf_get_name(0)
 
-  local cmd = "cursor"
-
-  vim.uv.spawn(cmd, {
-    args = {file_path},
-    stdio = {nil, nil, nil},  -- no stdio handling
-  }, function(code, signal)
-    -- Optional callback when the process exits
-    print("Process exited with code " .. code .. " and signal " .. signal)
-  end)
-end, { silent= true})
+-- vim.keymap.set('n', '<leader>c', function()
+--   local file_path = vim.api.nvim_buf_get_name(0)
+--
+--   local cmd = "cursor"
+--
+--   vim.uv.spawn(cmd, {
+--     args = {file_path},
+--     stdio = {nil, nil, nil},  -- no stdio handling
+--   }, function(code, signal)
+--     -- Optional callback when the process exits
+--     print("Process exited with code " .. code .. " and signal " .. signal)
+--   end)
+-- end, { silent= true})
 
 map('s', "H", "H")
 map('s', "T", "T")

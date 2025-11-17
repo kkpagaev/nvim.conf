@@ -54,7 +54,7 @@ local plugins = {
     lazy = false,
     config = function()
       require("colorizer").setup {
-        filetypes = { "lua", "css", "typescriptreact", "javascriptreact", "vue", "astro", "conf", "kitty" },
+        filetypes = { "lua", "scss", "css", "typescriptreact", "javascriptreact", "vue", "astro", "conf", "kitty" },
         user_default_options = {
           RGB = true,          -- #RGB hex codes
           RRGGBB = true,       -- #RRGGBB hex codes
@@ -86,7 +86,7 @@ local plugins = {
     'lewis6991/gitsigns.nvim',
     lazy = false,
     keys = {
-      { "<leader>b", "<CMD>Gitsigns blame_line<CR>" },
+      -- { "<leader>b", "<CMD>Gitsigns blame_line<CR>" },
       { "[=" },
       { "]=" }
     },
@@ -168,33 +168,33 @@ local plugins = {
       title = true
     }
   },
-  -- {
-  --   'mfussenegger/nvim-dap',
-  --   keys = {
-  --     "<C-g>",
-  --     "<C-c>",
-  --     "<C-r>",
-  --     "<C-l>",
-  --   },
-  --   dependencies = {
-  --      "miroshQa/debugmaster.nvim",
-  --     "rcarriga/cmp-dap",
-  --     "leoluz/nvim-dap-go",
-  --     "rcarriga/nvim-dap-ui",
-  --     "mfussenegger/nvim-dap", "jbyuki/one-small-step-for-vimkind",
-  --     "nvim-neotest/nvim-nio",
-  --     {
-  --       "theHamsta/nvim-dap-virtual-text",
-  --       opts = {}
-  --     },
-  --     { "mxsdev/nvim-dap-vscode-js", dependencies = { "mfussenegger/nvim-dap" } },
-  --     -- "jlcrochet/vim-crystal",
-  --   },
-  --   lazy = true,
-  --   config = function()
-  --     require("plugins.config.dap")
-  --   end
-  -- },
+  {
+    'mfussenegger/nvim-dap',
+    keys = {
+      "<C-g>",
+      "<C-c>",
+      "<C-r>",
+      "<C-l>",
+    },
+    dependencies = {
+       "miroshQa/debugmaster.nvim",
+      "rcarriga/cmp-dap",
+      "leoluz/nvim-dap-go",
+      "rcarriga/nvim-dap-ui",
+      "mfussenegger/nvim-dap", "jbyuki/one-small-step-for-vimkind",
+      "nvim-neotest/nvim-nio",
+      {
+        "theHamsta/nvim-dap-virtual-text",
+        opts = {}
+      },
+      { "mxsdev/nvim-dap-vscode-js", dependencies = { "mfussenegger/nvim-dap" } },
+      -- "jlcrochet/vim-crystal",
+    },
+    lazy = true,
+    config = function()
+      require("plugins.config.dap")
+    end
+  },
    {
   "LunarVim/bigfile.nvim",
   -- enabled = false,
@@ -266,8 +266,11 @@ local plugins = {
     },
     keys = {
       { "<leader>g" },
+      { "<leader>b" },
       { "gd" },
       { "gD" },
+      { "gw" },
+      { "gl" },
     },
     config = function()
       vim.keymap.set("n", "<leader>g", function()
@@ -279,7 +282,10 @@ local plugins = {
         end
       end, { silent = true })
 
+      vim.keymap.set("n", "<leader>b", "<CMD>Git blame<CR>")
       vim.keymap.set("n", "gd", vim.cmd.Gdiffsplit)
+      vim.keymap.set("n", "gw", vim.cmd.Gw)
+      vim.keymap.set("n", "gl", "<CMD>Git log --oneline<CR>")
       vim.keymap.set("n", "gD", ":Gdiffsplit!<CR>", { silent = true })
 
       local ThePrimeagen_Fugitive = vim.api.nvim_create_augroup("ThePrimeagen_Fugitive", {})
@@ -308,8 +314,20 @@ local plugins = {
           end, opts)
 
           vim.keymap.set("n", "<leader>t", ":Git push -u origin ", opts);
-        end,
-      })
+          vim.keymap.set("v", "/", function()
+            -- yank visual selection into register
+            local save_reg = vim.fn.getreg('"')
+            vim.cmd('normal! "vy')
+            local text = vim.fn.getreg('"')
+            vim.fn.setreg('"', save_reg)
+
+            -- escape quotes and inject into :Git log --grep
+            text = vim.fn.escape(text, '"\\')
+
+            vim.cmd('Git log --grep="' .. text .. '"')
+          end, opts)
+            end,
+          })
     end
   },
   {
@@ -353,6 +371,30 @@ local plugins = {
       })
     end
   },
+  {
+    "sheerun/vim-polyglot",
+    lazy = false,  -- don't load immediately
+    config = function()
+      -- vim.g.polyglot_disabled = {} -- or list languages to disable
+    end,
+  },
+   {
+    "vim-ruby/vim-ruby",
+    ft = { "ruby", "eruby" },  -- optional: only load for Ruby/Rails files
+    config = function()
+      -- Optional: make 'K' use ri if no LSP hover available
+      vim.g.ruby_doc_command = "ri"
+    end,
+  },
+  {
+    "NeogitOrg/neogit",
+    lazy = false,
+    branch = 'master',
+    dependencies = {
+      "nvim-lua/plenary.nvim",         -- required
+      "sindrets/diffview.nvim",        -- optional - Diff integration
+    },
+  }
   -- {
   --   "dmtrKovalenko/fff.nvim",
   --   build = "cargo build --release",

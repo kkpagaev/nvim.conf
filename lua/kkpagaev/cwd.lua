@@ -5,7 +5,7 @@ local action_state = require "telescope.actions.state"
 local conf = require("telescope.config").values
 local ui = require("harpoon.ui")
 
-local root_files = { "LICENSE", "package.json", "Makefile", "README.md" }
+local root_files = { "LICENSE", "package.json", "Makefile", "README.md", 'MIT-LICENSE' }
 local root_dirs = { ".git", ".github" }
 -- local og_root_dir = vim.fn.expand('%:p:h')
 
@@ -242,6 +242,57 @@ vim.keymap.set("n", "<leader>pg", function()
 
   colors()
 end)
+
+vim.keymap.set("n", "<leader>or", function()
+  opts = opts or {}
+
+  -- run command and get output
+  local handle = io.popen("bundle list --paths")
+  if not handle then return end
+  local result = handle:read("*a")
+  handle:close()
+
+  local paths = {}
+  local display = {}
+
+  for line in result:gmatch("[^\r\n]+") do
+    table.insert(paths, line)
+    table.insert(display, vim.fn.fnamemodify(line, ":t")) -- basename
+  end
+
+  pickers.new(opts, {
+    prompt_title = "Bundler Gems",
+    finder = finders.new_table {
+      results = display,
+      entry_maker = function(entry, idx)
+        return {
+          value = paths[idx],
+          display = entry,
+          ordinal = entry,
+        }
+      end,
+    },
+    sorter = conf.generic_sorter(opts),
+    attach_mappings = function(prompt_bufnr, map)
+      actions.select_default:replace(function()
+        actions.close(prompt_bufnr)
+        local selection = action_state.get_selected_entry()
+        local new_root = paths[selection.index]
+        set_root(new_root)
+
+        if require("harpoon.mark").get_length() == 0 then
+          require("telescope.builtin").find_files()
+          return
+        end
+        vim.cmd('noh')
+        ui.nav_file(1)
+      end)
+      return true
+    end,
+  }):find()
+end)
+
+
 
 vim.keymap.set("n", "<leader>pf", function()
   local colors = function(opts)

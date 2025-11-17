@@ -1,67 +1,70 @@
--- local capabilities = vim.lsp.protocol.make_client_capabilities()
--- capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
---
---
--- local util = require "formatter.util"
---
--- -- :clown:
--- local function format_eslint()
---   return {
---     exe = "eslint_d",
---     args = {
---       "--stdin",
---       "--stdin-filename",
---       util.escape_path(util.get_current_buffer_file_path()),
---       "--fix-to-stdout",
---     },
---     stdin = true,
---     try_node_modules = true,
---   }
--- end
---
--- local function format_prettier()
---   return {
---     exe = "prettierd",
---     args = { util.escape_path(util.get_current_buffer_file_path()) },
---     stdin = true,
---   }
--- end
---
--- local golang = require("formatter.filetypes.go")
---
--- require('formatter').setup {
---   logging = true,
---   filetype = {
---
---     typescript = { format_prettier },
---     typescriptreact = { format_prettier },
---     javascriptreact = { format_prettier },
---     vue = { format_prettier },
---     javascript = { format_prettier },
---
---     -- typescript = { format_eslint },
---     -- javascript = { format_eslint },
---     -- typescriptreact = { format_eslint },
---     -- vue = { format_eslint },
---
---     astro = { format_eslint },
---     go = {
---       golang.gofmt,
---       golang.goimports,
---     },
---   }
--- }
---
--- local ag = vim.api.nvim_create_augroup
--- local au = vim.api.nvim_create_autocmd
---
--- au("BufWritePost", {
---   group = ag("formatting", {}),
---   pattern = "*",
---   callback = function()
---     if vim.bo.filetype == "vue" then
---       return
---     end
---     vim.cmd("FormatWrite")
---   end
--- })
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+
+local util = require "formatter.util"
+
+-- :clown:
+local function format_eslint()
+  return {
+    exe = "eslint_d",
+    args = {
+      "--stdin",
+      "--stdin-filename",
+      util.escape_path(util.get_current_buffer_file_path()),
+      "--fix-to-stdout",
+    },
+    stdin = true,
+    try_node_modules = true,
+  }
+end
+
+local function format_prettier()
+  return {
+    exe = "/home/kkpagaev/.config/yarn/global/node_modules/.bin/prettier-hbs",
+    args = { util.escape_path(util.get_current_buffer_file_path()) },
+    stdin = true,
+  }
+end
+
+local golang = require("formatter.filetypes.go")
+
+require('formatter').setup {
+  logging = true,
+  filetype = {
+
+    typescript = { format_prettier },
+    typescriptreact = { format_prettier },
+    javascriptreact = { format_prettier },
+    vue = { format_prettier },
+    javascript = { format_prettier },
+    ["html.handlebars"] = { format_prettier},
+    -- html = { format_prettier },
+
+    -- typescript = { format_eslint },
+    -- javascript = { format_eslint },
+    -- typescriptreact = { format_eslint },
+    -- vue = { format_eslint },
+
+    scss = { format_prettier },
+    astro = { format_eslint },
+    go = {
+      golang.gofmt,
+      golang.goimports,
+    },
+  }
+}
+
+local ag = vim.api.nvim_create_augroup
+local au = vim.api.nvim_create_autocmd
+
+au("BufWritePost", {
+  group = ag("formatting", {}),
+  pattern = "*",
+  callback = function()
+    if vim.bo.filetype == "vue" then
+      return
+    end
+    vim.cmd("FormatWrite")
+  end
+})
