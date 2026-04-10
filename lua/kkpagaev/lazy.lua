@@ -165,33 +165,6 @@ local plugins = {
       title = true
     }
   },
-  {
-    'mfussenegger/nvim-dap',
-    keys = {
-      "<C-g>",
-      "<C-c>",
-      "<C-r>",
-      "<C-l>",
-    },
-    dependencies = {
-       "miroshQa/debugmaster.nvim",
-      "rcarriga/cmp-dap",
-      "leoluz/nvim-dap-go",
-      "rcarriga/nvim-dap-ui",
-      "mfussenegger/nvim-dap", "jbyuki/one-small-step-for-vimkind",
-      "nvim-neotest/nvim-nio",
-      {
-        "theHamsta/nvim-dap-virtual-text",
-        opts = {}
-      },
-      { "mxsdev/nvim-dap-vscode-js", dependencies = { "mfussenegger/nvim-dap" } },
-      -- "jlcrochet/vim-crystal",
-    },
-    lazy = true,
-    config = function()
-      require("plugins.config.dap")
-    end
-  },
    {
   "LunarVim/bigfile.nvim",
   -- enabled = false,
