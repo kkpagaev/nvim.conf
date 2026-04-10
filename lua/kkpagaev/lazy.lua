@@ -372,15 +372,6 @@ local plugins = {
       -- vim.g.ruby_doc_command = "ri"
     end,
   },
-  {
-    "NeogitOrg/neogit",
-    lazy = false,
-    branch = 'master',
-    dependencies = {
-      "nvim-lua/plenary.nvim",         -- required
-      "sindrets/diffview.nvim",        -- optional - Diff integration
-    },
-  },
   -- {
   --   "dmtrKovalenko/fff.nvim",
   --   build = "cargo build --release",
