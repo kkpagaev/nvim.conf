@@ -1,16 +1,7 @@
 local cmp = require("cmp")
--- local lspkind = require('lspkind')
-
-vim.cmd([[autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })]])
 
 cmp.setup {
-  -- completion = {
-  --     autocomplete = false
-  -- },
   preselect = cmp.PreselectMode.None,
-  -- completion = {
-  --   completeopt = "menu,menuone",
-  -- },
   window = {
     documentation = cmp.config.window.bordered(),
   },
@@ -30,13 +21,7 @@ cmp.setup {
       end
     end),
     ['<C-Space>'] =
-        cmp.mapping.complete({
-          -- reason = cmp.ContextReason.Auto,
-        }),
-    -- ['<CR>'] = cmp.mapping.confirm {
-    --   behavior = cmp.ConfirmBehavior.Replace,
-    --   select = false,
-    -- },
+        cmp.mapping.complete({ }),
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace })
@@ -54,11 +39,3 @@ cmp.setup {
     { name = 'buffer', priority = 1 },
   },
 }
-
--- local cmp_autopairs = require "nvim-autopairs.completion.cmp"
--- require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done({
---   filetypes = {
---     ruby = {}
---   }
--- }))
-

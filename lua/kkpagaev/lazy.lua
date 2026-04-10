@@ -125,8 +125,6 @@ local plugins = {
     dependencies = {
       "pmizio/typescript-tools.nvim",
       "lewis6991/hover.nvim",
-      'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
       -- "ray-x/lsp_signature.nvim",
       {
         'j-hui/fidget.nvim',
@@ -134,7 +132,6 @@ local plugins = {
       }
     },
     lazy = false,
-    event = "BufEnter",
     -- event = "InsertEnter",
     -- init = function()
     --   lazy_load "nvim-lspconfig"

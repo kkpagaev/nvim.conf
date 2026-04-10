@@ -74,14 +74,6 @@ capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
 
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
--- require('mason').setup()
---
--- local mason_lspconfig = require 'mason-lspconfig'
---
--- mason_lspconfig.setup {
---   automatic_enable = false
--- }
-
 local sources = {
   -- nullls = {                     -- Name of source
   --   ignore = true,         -- Ignore notifications from this source
@@ -173,9 +165,6 @@ vim.lsp.config.eslint = ({
     })
   end,
 })
-
-local data_path = vim.fn.stdpath('data')
-local location = data_path.."/mason/packages/vue-language-server/node_modules/@vue/language-server"
 
 -- vim.lsp.config.ruby_lsp.setup {
 --   capabilities = capabilities,
