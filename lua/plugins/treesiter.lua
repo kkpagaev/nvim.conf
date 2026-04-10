@@ -37,7 +37,7 @@ return {
         }
       },
       highlight = {
-        enable = true,
+        enable = false,
             custom_captures = {
       ["attr.value"] = "TSKeyword"
     }

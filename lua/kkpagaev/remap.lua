@@ -5,7 +5,7 @@ local function map(m, k, v)
   vim.keymap.set(m, k, v, { silent = true })
 end
 
-vim.api.nvim_set_keymap("n", "gx", [[:silent execute '!$BROWSER ' . shellescape(expand('<cfile>'), 1)<CR>]], {})
+vim.api.nvim_set_keymap("n", "gx", [[:silent execute '!open -a "Zen" ' . shellescape(expand('<cfile>') . '', 1)<CR>]], {})
 
 g.mapleader = " "
 g.maplocalleader = " "
@@ -40,8 +40,6 @@ map('n', "T", "F")
 map('n', "F", "T")
 
 
-map("n", "YY", "va{Vy")
-
 vim.api.nvim_set_keymap('n', ',', '<C-w>', { noremap = true })
 vim.api.nvim_set_keymap('n', ",d", ':q<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '>', '>>', { noremap = true })
@@ -66,6 +64,8 @@ map('n', "yf", 'jgg"+yG<c-o>k')
 map('n', "cum", 'jgg"+yG<c-o>k')
 
 map('n', 'U', '<c-r>')
+
+map('n', 'S', 'K')
 
 map('v', "<leader>y", '"+y')
 map('n', "<leader>y", '"+y')
@@ -103,8 +103,12 @@ map('s', "T", "T")
 map('s', "J", "J")
 map('s', "K", "K")
 
-vim.keymap.set('n', '<Tab>', '<C-W>w')
-vim.keymap.set('n', '<S-Tab>', '<C-W>W')
+vim.keymap.set('n', 'go', '<C-o>')
+vim.keymap.set('n', 'gi', '<C-i>')
+-- vim.keymap.set('n', '<Tab>', '<C-W>w')
+-- vim.keymap.set('n', '<S-Tab>', '<C-W>W')
+-- vim.keymap.set('n', '<Tab>', '<C-W>w')
+-- vim.keymap.set('n', '<S-Tab>', '<C-W>W')
 
 -- ???
 vim.keymap.set('n', '<C-f>', function()
@@ -117,8 +121,8 @@ vim.keymap.set("n", "J", "mzJ`z")
 
 vim.keymap.set("x", "<leader>p", [["_dP]])
 
-vim.keymap.set("n", "(", "<cmd>cprev<CR>zz")
-vim.keymap.set("n", ")", "<cmd>cnext<CR>zz")
+vim.keymap.set("n", "(", "<cmd>keepjumps cprev<CR>zz")
+vim.keymap.set("n", ")", "<cmd>keepjumps cnext<CR>zz")
 
 vim.keymap.set("n", "gh", "<cmd>TSToolsGoToSourceDefinition<CR>")
 
@@ -175,3 +179,39 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 vim.keymap.set("n", "<C-e>", "<C-I>zz")
 vim.keymap.set("n", "<C-o>", "<C-o>zz")
+vim.keymap.set("v", "<leader>qf", function()
+  local start = vim.fn.getpos("'<")[2]
+  local finish = vim.fn.getpos("'>")[2]
+  local lines = vim.fn.getline(start, finish)
+
+  local items = {}
+  for _, file in ipairs(lines) do
+    if file ~= "" then
+      table.insert(items, { filename = file })
+    end
+  end
+
+  vim.fn.setqflist(items, "r")
+  vim.cmd("copen")
+end, { desc = "Send selected file list to quickfix" })
+
+vim.keymap.set("v", "<leader>o", function()
+  -- Get visual selection range
+  local start_line = vim.fn.line("'<")
+  local end_line = vim.fn.line("'>")
+
+  local items = {}
+  for lnum = start_line, end_line do
+    local text = vim.fn.getline(lnum)
+    table.insert(items, {
+      filename = vim.fn.expand("%"),
+      lnum = lnum,
+      text = text,
+    })
+  end
+
+  -- Replace quickfix list and open it
+  vim.fn.setqflist({}, "r", { title = "Visual Selection", items = items })
+  vim.cmd("copen")
+end, { desc = "Send visual selection to quickfix" })
+

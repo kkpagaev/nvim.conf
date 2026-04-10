@@ -36,7 +36,7 @@ return {
       defaults = {
         -- path_display = { 'smart' },
         -- file_ignore_patterns = { '.git' },
-        file_ignore_patterns = { "solutions/", "files/emails", "data/images/", "%pnpm-lock.yaml", "snippet/", "snippets/", "%package-lock.json", "target/", ".obsidian/", ".git/", ".cache", "%.out", "%.class",
+        file_ignore_patterns = { "solutions/", "files/emails", "%pnpm-lock.yaml", "snippet/", "snippets/", "%package-lock.json", "target/", ".obsidian/", ".git/", "%.out", "%.class",
           "%.ico", "%.pdf", "%.mkv", "%.ttf", "%.woff", "%.eot", "%.svg", '%.webp', '%.png', "%.mp4", "%.zip", "yarn.lock", ".yarn/", ".vscode/" },
         mappings = {
               i = {
@@ -63,11 +63,6 @@ return {
 
               require('telescope.builtin').live_grep { search_dirs = search_dirs }
             end,
-            opts = {
-              -- nowait = true,
-              -- silent = true,
-              desc = 'Live grep on results',
-            },
             ["<esc>"] = actions.close,
             ["<C-t>"] = actions.send_to_qflist + actions.open_qflist
           },

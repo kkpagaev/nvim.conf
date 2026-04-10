@@ -5,29 +5,6 @@ local function send_command_to_split(command)
   vim.fn.system('tmux send-keys -t right "' .. command .. '" Enter')
 end
 
--- au('InsertLeave', {
---   -- group = ag('yank_highlight', {}),
---   pattern = '*',
---   callback = function()
---     vim.opt_local.relativenumber = true
---   end,
--- })
---
--- au('InsertEnter', {
---   -- group = ag('yank_highlight', {}),
---   pattern = '*',
---   callback = function()
---     vim.opt_local.relativenumber = false
---   end,
--- })
---
-
--- au("BufWinEnter", {
---   callback = function()
---     require("marks").BufWinEnterHandler()
---   end
--- })
-
 au('TextYankPost', {
   group = ag('yank_highlight', {}),
   pattern = '*',
@@ -57,4 +34,14 @@ au('BufRead', {
     end
   end,
 })
+
+vim.cmd([[
+  highlight ExtraWhitespace ctermbg=red guibg=red
+  match ExtraWhitespace /\s\+$/
+  augroup TrailingWhitespace
+    autocmd!
+    autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+    autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+  augroup END
+]])
 

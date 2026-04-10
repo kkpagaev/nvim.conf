@@ -1,8 +1,3 @@
-local nvim_lsp = require('lspconfig')
-
-local on_attach = function(client, bufnr)
-  -- client.server_capabilities.semanticTokensProvider = nil
-
   local nmap = function(keys, func, desc)
     if desc then
       desc = 'LSP: ' .. desc
@@ -11,17 +6,28 @@ local on_attach = function(client, bufnr)
     vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
   end
 
-  nmap('ge', vim.lsp.buf.definition, '[G]oto [D]efinition')
-  nmap('gE', vim.lsp.buf.type_definition, '[G]oto [D]efinition')
-  nmap('gr', vim.lsp.buf.references, '[G]oto [R]eferences')
+-- vim.keymap.set("n", "S", require("hover").hover, { desc = "hover.nvim" })
+vim.keymap.set('n', 'S', function()
+  vim.lsp.buf.hover({
+    border = "rounded"
+  })
+end)
+vim.keymap.set("n", "gS", require("hover").hover_select, { desc = "hover.nvim (select)" })
+vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+vim.keymap.set("n", ",t", vim.diagnostic.open_float)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_prev)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_next)
+vim.keymap.set('n', '<leader>a', vim.lsp.buf.code_action)
+nmap('ge', vim.lsp.buf.definition, '[G]oto [D]efinition')
+nmap('gE', vim.lsp.buf.type_definition, '[G]oto [D]efinition')
+nmap('gr', vim.lsp.buf.references, '[G]oto [R]eferences')
+local nvim_lsp = require('lspconfig')
+
+local on_attach = function(client, bufnr)
+  -- client.server_capabilities.semanticTokensProvider = nil
+
   -- nmap('gi', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
 
-  vim.keymap.set("n", "S", require("hover").hover, { desc = "hover.nvim" })
-  vim.keymap.set("n", "gS", require("hover").hover_select, { desc = "hover.nvim (select)" })
-  vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
-  vim.keymap.set("n", ",t", vim.diagnostic.open_float)
-  vim.keymap.set('n', '[*', vim.diagnostic.goto_prev)
-  vim.keymap.set('n', ']*', vim.diagnostic.goto_next)
 
   -- vim.keymap.set("n", "gK", require("hover").hover_select, { desc = "hover.nvim (select)" })
 
@@ -68,13 +74,13 @@ capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
 
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-require('mason').setup()
-
-local mason_lspconfig = require 'mason-lspconfig'
-
-mason_lspconfig.setup {
-  automatic_enable = false
-}
+-- require('mason').setup()
+--
+-- local mason_lspconfig = require 'mason-lspconfig'
+--
+-- mason_lspconfig.setup {
+--   automatic_enable = false
+-- }
 
 local sources = {
   -- nullls = {                     -- Name of source
@@ -175,24 +181,40 @@ local location = data_path.."/mason/packages/vue-language-server/node_modules/@v
 --   capabilities = capabilities,
 --   on_attach = on_attach,
 -- }
+-- require('lspconfig.configs').locales_lsp = {
+--   capabilities = capabilities,
+--   on_attach = on_attach,
+--   default_config = {
+--     cmd = { 'node', '/Users/kkpagaev/gitlab/locales-lsp/dist/server.js', '--stdio' },
+--     filetypes = { 'ruby', 'eruby', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'yaml', 'coffee' },
+--     root_dir = require('lspconfig.util').root_pattern('Gemfile', '.git'),
+--   },
+-- }
+-- require('lspconfig').locales_lsp.setup({})
+--
+-- require('lspconfig.configs').capybar_lsp = {
+--   capabilities = capabilities,
+--   on_attach = on_attach,
+--   default_config = {
+--     cmd = { 'node', '/Users/kkpagaev/gitlab/capybar-lsp/dist/server.js', '--stdio' },
+--     filetypes = { 'cucumber', 'ruby' },
+--     root_dir = require('lspconfig.util').root_pattern('Gemfile', '.git'),
+--   },
+-- }
+-- require('lspconfig').capybar_lsp.setup({})
 
-vim.lsp.config.cssls = {
-  capabilities = capabilities,
-  on_attach = on_attach,
-  filetypes = { "css", "scss", "less", "html" }
-}
+-- require('lspconfig.configs').ruby_lsp = {
+--   capabilities = capabilities,
+--   on_attach = on_attach,
+--   default_config = {
+--     -- cmd = { 'node', '/Users/kkpagaev/gitlab/capybar-lsp/dist/server.js', '--stdio' },
+--     -- filetypes = { 'cucumber', 'ruby' },
+--     -- root_dir = require('lspconfig.util').root_pattern('Gemfile', '.git'),
+--   },
+-- }
 
-vim.lsp.config('html', {
-    capabilities = capabilities,
-    on_attach = on_attach,
-})
-
-vim.lsp.config.hls =  {
-  -- cmd = { "haskell-language-server-wrapper-2.10.0.0" },
-  capabilities = capabilities,
-  on_attach = on_attach,
-  filetypes = { 'haskell', 'lhaskell', 'cabal' },
-}
+-- require('lspconfig').ruby_lsp.setup({})
 
 vim.lsp.enable('html')
 vim.lsp.enable('tailwindcss')
+vim.lsp.enable('ruby_lsp')

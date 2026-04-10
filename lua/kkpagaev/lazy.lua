@@ -295,6 +295,23 @@ local plugins = {
         group = ThePrimeagen_Fugitive,
         pattern = "*",
         callback = function()
+          if vim.bo.ft ~= "git" then
+            return
+          end
+          local bufnr = vim.api.nvim_get_current_buf()
+          -- vim.opt_local.number = false
+          -- vim.opt_local.relativenumber = false
+          -- vim.opt_local.winbar = "     "
+          local opts = { buffer = bufnr, remap = false }
+          vim.opt_local.includeexpr = "substitute(v:fname, '^[ab]/', '', '')"
+
+          vim.keymap.set("n", "gf", "gF", opts);
+        end
+      })
+      autocmd("BufWinEnter", {
+        group = ThePrimeagen_Fugitive,
+        pattern = "*",
+        callback = function()
           if vim.bo.ft ~= "fugitive" then
             return
           end
@@ -313,7 +330,6 @@ local plugins = {
             vim.cmd.Git({ 'pull', '--rebase' })
           end, opts)
 
-          vim.keymap.set("n", "<leader>t", ":Git push -u origin ", opts);
           vim.keymap.set("v", "/", function()
             -- yank visual selection into register
             local save_reg = vim.fn.getreg('"')
@@ -383,7 +399,7 @@ local plugins = {
     ft = { "ruby", "eruby" },  -- optional: only load for Ruby/Rails files
     config = function()
       -- Optional: make 'K' use ri if no LSP hover available
-      vim.g.ruby_doc_command = "ri"
+      -- vim.g.ruby_doc_command = "ri"
     end,
   },
   {
@@ -394,7 +410,7 @@ local plugins = {
       "nvim-lua/plenary.nvim",         -- required
       "sindrets/diffview.nvim",        -- optional - Diff integration
     },
-  }
+  },
   -- {
   --   "dmtrKovalenko/fff.nvim",
   --   build = "cargo build --release",
@@ -448,6 +464,43 @@ local plugins = {
   --     },
   --   }
   -- },
+  {
+  "folke/trouble.nvim",
+  opts = {}, -- for default options, refer to the configuration section for custom setup.
+  cmd = "Trouble",
+  keys = {
+    {
+      "<leader>t",
+      "<cmd>Trouble diagnostics toggle<cr>",
+      desc = "Diagnostics (Trouble)",
+    },
+    {
+      "<leader>xX",
+      "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+      desc = "Buffer Diagnostics (Trouble)",
+    },
+    {
+      "<leader>cs",
+      "<cmd>Trouble symbols toggle focus=false<cr>",
+      desc = "Symbols (Trouble)",
+    },
+    {
+      "<leader>cl",
+      "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+      desc = "LSP Definitions / references / ... (Trouble)",
+    },
+    {
+      "<leader>xL",
+      "<cmd>Trouble loclist toggle<cr>",
+      desc = "Location List (Trouble)",
+    },
+    {
+      "<leader>xQ",
+      "<cmd>Trouble qflist toggle<cr>",
+      desc = "Quickfix List (Trouble)",
+    },
+  },
+}
 }
 
 require("lazy").setup(plugins, {
