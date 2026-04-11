@@ -12,6 +12,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
+  -- for coffeescript only
   {
     "sheerun/vim-polyglot",
     lazy = false,  -- don't load immediately
@@ -141,20 +142,6 @@ local plugins = {
         },
       }
     end,
-  },
-  {
-    "LunarVim/bigfile.nvim",
-    event = "BufReadPre",
-    opts = {
-      features = {
-        "illuminate",
-        "indent_blankline",
-        "lsp",
-        "matchparen",
-        "syntax",
-        "treesitter",
-      },
-    },
   },
   {
     "nacro90/numb.nvim",
@@ -424,8 +411,6 @@ local plugins = {
       "nvim-treesitter/nvim-treesitter-context",
       "windwp/nvim-ts-autotag",
     },
-    cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
-    build = ":TSUpdate",
     config = function()
       require("nvim-treesitter.configs").setup {
         ensure_installed = {
