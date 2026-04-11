@@ -100,7 +100,7 @@ require('fidget').setup({
 vim.lsp.config.tailwindcss = {
   on_attach = on_attach,
   capabilities = capabilities,
-  filetypes = { 
+  filetypes = {
     "astro",
     "vue",
     "elixir",
@@ -166,43 +166,27 @@ vim.lsp.config.eslint = ({
   end,
 })
 
--- vim.lsp.config.ruby_lsp.setup {
---   capabilities = capabilities,
---   on_attach = on_attach,
--- }
--- require('lspconfig.configs').locales_lsp = {
---   capabilities = capabilities,
---   on_attach = on_attach,
---   default_config = {
---     cmd = { 'node', '/Users/kkpagaev/gitlab/locales-lsp/dist/server.js', '--stdio' },
---     filetypes = { 'ruby', 'eruby', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'yaml', 'coffee' },
---     root_dir = require('lspconfig.util').root_pattern('Gemfile', '.git'),
---   },
--- }
--- require('lspconfig').locales_lsp.setup({})
---
--- require('lspconfig.configs').capybar_lsp = {
---   capabilities = capabilities,
---   on_attach = on_attach,
---   default_config = {
---     cmd = { 'node', '/Users/kkpagaev/gitlab/capybar-lsp/dist/server.js', '--stdio' },
---     filetypes = { 'cucumber', 'ruby' },
---     root_dir = require('lspconfig.util').root_pattern('Gemfile', '.git'),
---   },
--- }
--- require('lspconfig').capybar_lsp.setup({})
+require('lspconfig.configs').locales_lsp = {
+  capabilities = capabilities,
+  on_attach = on_attach,
+  default_config = {
+    cmd = { 'node', '/Users/kkpagaev/gitlab/locales-lsp/dist/server.js', '--stdio' },
+    filetypes = { 'ruby', 'eruby', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'yaml', 'coffee' },
+    root_dir = require('lspconfig.util').root_pattern('Gemfile', '.git'),
+  },
+}
+require('lspconfig').locales_lsp.setup({})
 
--- require('lspconfig.configs').ruby_lsp = {
---   capabilities = capabilities,
---   on_attach = on_attach,
---   default_config = {
---     -- cmd = { 'node', '/Users/kkpagaev/gitlab/capybar-lsp/dist/server.js', '--stdio' },
---     -- filetypes = { 'cucumber', 'ruby' },
---     -- root_dir = require('lspconfig.util').root_pattern('Gemfile', '.git'),
---   },
--- }
-
--- require('lspconfig').ruby_lsp.setup({})
+require('lspconfig.configs').capybar_lsp = {
+  capabilities = capabilities,
+  on_attach = on_attach,
+  default_config = {
+    cmd = { 'node', '/Users/kkpagaev/gitlab/capybar-lsp/dist/server.js', '--stdio' },
+    filetypes = { 'cucumber', 'ruby' },
+    root_dir = require('lspconfig.util').root_pattern('Gemfile', '.git'),
+  },
+}
+require('lspconfig').capybar_lsp.setup({})
 
 vim.lsp.enable('html')
 vim.lsp.enable('tailwindcss')
