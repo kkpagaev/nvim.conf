@@ -13,6 +13,13 @@ vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
   {
+    "sheerun/vim-polyglot",
+    lazy = false,  -- don't load immediately
+    config = function()
+      -- vim.g.polyglot_disabled = {} -- or list languages to disable
+    end,
+  },
+  {
     "numToStr/Comment.nvim",
     lazy = true,
     opts = {},
@@ -100,7 +107,6 @@ local plugins = {
     lazy = false,
     dependencies = {
       "pmizio/typescript-tools.nvim",
-      "lewis6991/hover.nvim",
       { "j-hui/fidget.nvim", tag = "legacy" },
     },
     config = function()

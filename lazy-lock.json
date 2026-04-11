@@ -8,7 +8,6 @@
   "gitsigns.nvim": { "branch": "main", "commit": "8d82c240f190fc33723d48c308ccc1ed8baad69d" },
   "gruvbox.nvim": { "branch": "main", "commit": "6d409ee8af4e84d2327b4b5856f843b97a85a567" },
   "harpoon": { "branch": "master", "commit": "1bc17e3e42ea3c46b33c0bbad6a880792692a1b3" },
-  "hover.nvim": { "branch": "main", "commit": "e73c00da3a9c87a21d2a8ddf7ab4a39824bd5d56" },
   "lazy.nvim": { "branch": "main", "commit": "306a05526ada86a7b30af95c5cc81ffba93fef97" },
   "numb.nvim": { "branch": "master", "commit": "12ef3913dea8727d4632c6f2ed47957a993de627" },
   "nvim-cmp": { "branch": "main", "commit": "a1d504892f2bc56c2e79b65c6faded2fd21f3eca" },
@@ -26,5 +25,6 @@
   "typescript-tools.nvim": { "branch": "master", "commit": "c2f5910074103705661e9651aa841e0d7eea9932" },
   "undotree": { "branch": "master", "commit": "6fa6b57cda8459e1e4b2ca34df702f55242f4e4d" },
   "vim-fugitive": { "branch": "master", "commit": "3b753cf8c6a4dcde6edee8827d464ba9b8c4a6f0" },
+  "vim-polyglot": { "branch": "master", "commit": "f061eddb7cdcc614c8406847b2bfb53099832a4e" },
   "vim-rhubarb": { "branch": "master", "commit": "5496d7c94581c4c9ad7430357449bb57fc59f501" }
 }

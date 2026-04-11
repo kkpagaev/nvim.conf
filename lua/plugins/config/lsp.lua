@@ -11,7 +11,6 @@ vim.keymap.set('n', 'S', function()
     border = "rounded"
   })
 end)
-vim.keymap.set("n", "gS", require("hover").hover_select, { desc = "hover.nvim (select)" })
 vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
 vim.keymap.set("n", ",t", vim.diagnostic.open_float)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_prev)
