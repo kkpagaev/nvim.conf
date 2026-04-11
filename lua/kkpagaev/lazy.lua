@@ -20,18 +20,6 @@ local plugins = {
     end,
   },
   {
-    "numToStr/Comment.nvim",
-    lazy = true,
-    opts = {},
-    keys = {
-      { "gcc",  mode = "n" },
-      { "gcip", mode = "n" },
-      { "gc",   mode = "v" },
-      { "gbc",  mode = "n" },
-      { "gb",   mode = "v" },
-    },
-  },
-  {
     "NvChad/nvim-colorizer.lua",
     lazy = false,
     config = function()
