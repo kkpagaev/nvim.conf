@@ -1,2 +1,0 @@
-select * from prices pr
-WHERE 
