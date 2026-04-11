@@ -13,14 +13,6 @@ vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
   {
-    "echasnovski/mini.pick",
-    lazy = false,
-    keys = {
-      { "<leader>u", "<CMD>Pick files<CR>" },
-      { "<leader>fh", "<CMD>Pick help<CR>" },
-    }
-  },
-  {
     "nvim-tree/nvim-web-devicons",
     lazy = true,
     -- event = "VeryLazy",
@@ -148,7 +140,47 @@ local plugins = {
       'hrsh7th/cmp-buffer',
     },
     config = function()
-      require("plugins.config.cmp")
+        local cmp = require("cmp")
+
+        cmp.setup {
+          preselect = cmp.PreselectMode.None,
+          window = {
+            documentation = cmp.config.window.bordered(),
+          },
+          sorting = {
+            --  comparators = {
+            --     cmp.config.compare.recently_used
+            -- },
+          },
+          mapping = cmp.mapping.preset.insert {
+            ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+            ["<C-t>"] = cmp.mapping.close(),
+            ['<Down>'] = cmp.mapping.select_next_item(),
+            ['<Up>'] = cmp.mapping.select_prev_item(),
+            ['<C-f>'] = cmp.mapping(function()
+              if cmp.visible() then
+                cmp.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace })
+              end
+            end),
+            ['<C-Space>'] =
+                cmp.mapping.complete({ }),
+            ['<Tab>'] = cmp.mapping(function(fallback)
+              if cmp.visible() then
+                cmp.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace })
+              else
+                fallback()
+              end
+            end, {
+              'i',
+              's',
+            }),
+          },
+          sources = {
+            { name = 'nvim_lsp', priority = 1000 },
+            { name = 'path' },
+            { name = 'buffer', priority = 1 },
+          },
+        }
     end
   },
   {
@@ -269,9 +301,6 @@ local plugins = {
             return
           end
           local bufnr = vim.api.nvim_get_current_buf()
-          -- vim.opt_local.number = false
-          -- vim.opt_local.relativenumber = false
-          -- vim.opt_local.winbar = "     "
           local opts = { buffer = bufnr, remap = false }
           vim.opt_local.includeexpr = "substitute(v:fname, '^[ab]/', '', '')"
 
@@ -291,14 +320,6 @@ local plugins = {
           vim.opt_local.relativenumber = false
           vim.opt_local.winbar = "     "
           local opts = { buffer = bufnr, remap = false }
-          vim.keymap.set("n", "<leader>P", function()
-            vim.cmd.Git('push')
-          end, opts)
-
-          -- rebase always
-          vim.keymap.set("n", "<leader>p", function()
-            vim.cmd.Git({ 'pull', '--rebase' })
-          end, opts)
 
           vim.keymap.set("v", "/", function()
             -- yank visual selection into register
@@ -323,7 +344,6 @@ local plugins = {
     config = function()
         require('neogen').setup {}
     end,
-
   },
   {
     "stevearc/oil.nvim",
@@ -357,49 +377,225 @@ local plugins = {
       })
     end
   },
-  {
-    "sheerun/vim-polyglot",
-    lazy = false,  -- don't load immediately
-    config = function()
-      -- vim.g.polyglot_disabled = {} -- or list languages to disable
-    end,
+    {
+  "ThePrimeagen/harpoon",
+  dependencies = {
+    'nvim-lua/plenary.nvim',
+    "nvim-tree/nvim-web-devicons"
   },
-  {
-  "folke/trouble.nvim",
-  opts = {}, -- for default options, refer to the configuration section for custom setup.
-  cmd = "Trouble",
+  lazy = false,
+  -- event = "InsertChange",
   keys = {
-    {
-      "<leader>t",
-      "<cmd>Trouble diagnostics toggle<cr>",
-      desc = "Diagnostics (Trouble)",
-    },
-    {
-      "<leader>xX",
-      "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
-      desc = "Buffer Diagnostics (Trouble)",
-    },
-    {
-      "<leader>cs",
-      "<cmd>Trouble symbols toggle focus=false<cr>",
-      desc = "Symbols (Trouble)",
-    },
-    {
-      "<leader>cl",
-      "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-      desc = "LSP Definitions / references / ... (Trouble)",
-    },
-    {
-      "<leader>xL",
-      "<cmd>Trouble loclist toggle<cr>",
-      desc = "Location List (Trouble)",
-    },
-    {
-      "<leader>xQ",
-      "<cmd>Trouble qflist toggle<cr>",
-      desc = "Quickfix List (Trouble)",
-    },
+    "M",
+    "<BS>",
+    "<CR>",
+    "<leader>h",
+    "<C-h>",
+    "<C-t>",
+    "<C-n>",
+    "<C-s>",
   },
+  config = function()
+    local status_ok, harpoon = pcall(require, "harpoon")
+    if not status_ok then
+      return
+    end
+
+    harpoon.setup({
+      tabline = false,
+      menu = {
+        -- borderchars = {},
+        border = {}
+      }
+    })
+
+
+    vim.keymap.set('v', '<leader>h', function()
+      require("harpoon.ui").toggle_quick_menu()
+      -- winbar.clear()
+    end)
+    vim.keymap.set('n', '<leader>h', function()
+      require("harpoon.ui").toggle_quick_menu()
+    end)
+
+    local ui = require("harpoon.ui")
+
+    vim.keymap.set("n", "<BS>", function()
+      if require("harpoon.mark").get_length() == 0 then
+        require("telescope.builtin").find_files()
+        return
+      end
+      vim.cmd('noh')
+      ui.nav_file(1)
+    end)
+    vim.keymap.set("n", "<C-h>", function()
+      if require("harpoon.mark").get_length() == 0 then
+        require("telescope.builtin").find_files()
+
+        return
+      end
+      vim.cmd('noh')
+      ui.nav_file(1)
+    end)
+    vim.keymap.set("n", "<C-t>", function()
+      ui.nav_file(2)
+      vim.cmd('noh')
+    end)
+    vim.keymap.set("n", "<Down>", function()
+      ui.nav_file(3)
+      vim.cmd('noh')
+    end)
+    vim.keymap.set("n", "<C-n>", function()
+      ui.nav_file(3)
+      vim.cmd('noh')
+    end)
+      vim.keymap.set("n", "<C-s>", function()
+      vim.cmd('noh')
+      ui.nav_file(4)
+    end)
+
+    local group = vim.api.nvim_create_augroup("Harpoon Augroup", { clear = true })
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = "harpoon",
+      group = group,
+      callback = function()
+        vim.keymap.set("n", "s", function()
+          local curline = vim.api.nvim_get_current_line()
+          local working_directory = vim.fn.getcwd() .. "/"
+          vim.cmd("vs")
+          vim.cmd("e " .. working_directory .. curline)
+        end, { buffer = true, noremap = true, silent = true })
+      end,
+    })
+
+    vim.api.nvim_create_autocmd("BufDelete", {
+      pattern = "harpoon",
+      group = group,
+      callback = function()
+        -- winbar.clear()
+      end,
+    })
+
+    vim.keymap.set("n", "M", function()
+      local mark = require('harpoon.mark')
+      local i = mark.get_current_index()
+
+      mark.toggle_file(i)
+    end)
+
+    vim.api.nvim_create_autocmd("FileType", {
+      callback = function()
+        local filetype = vim.bo.filetype
+        if filetype == "qf" or filetype == "netrw" or filetype == "oil" then
+          return
+        end
+
+        vim.keymap.set("n", "<CR>", function()
+          local mark = require('harpoon.mark')
+          local i = mark.get_current_index()
+
+          mark.toggle_file(i)
+        end, { buffer = true, noremap = true, silent = true })
+      end,
+    })
+  end
+},
+{
+  'nvim-telescope/telescope.nvim',
+  dependencies = {
+    'nvim-tree/nvim-web-devicons',
+    'nvim-lua/plenary.nvim' },
+  lazy = true,
+  keys = {
+    { "<leader><space>" },
+    { "<Up>" },
+    { "<leader>u" },
+    { "<C-p>",          "<cmd>Telescope git_files<CR>",  desc = "Find a string", silent = true },
+    { "<leader>/",      "<cmd>Telescope live_grep<CR>",  desc = "Find a string", silent = true },
+    { "<leader>:",      "<cmd>Telescope commands<CR>",   desc = "Find a string", silent = true },
+    { "<leader>fh",     "<cmd>Telescope help_tags<CR>",  desc = "Help",          silent = true },
+    { "<leader>fg",     "<cmd>Telescope git_status<CR>", desc = "Find Git",      silent = true },
+    { "<leader>fb",     "<cmd>Telescope buffers<CR>", desc = "Find Git",      silent = true },
+    { "<leader>fy",     "<cmd>Telescope registers<CR>", desc = "Find Git",      silent = true },
+    { ",r",             "<cmd>Telescope resume<CR>",     desc = "resume",        silent = true },
+  },
+  config = function()
+    local status_ok, telescope = pcall(require, "telescope")
+    if not status_ok then
+      return
+    end
+
+    local actions = require('telescope.actions')
+    telescope.setup {
+      pickers = {
+        colorscheme = {
+          enable_preview = true
+        },
+        find_files = {
+          hidden = true
+        },
+      },
+      defaults = {
+        -- path_display = { 'smart' },
+        -- file_ignore_patterns = { '.git' },
+        file_ignore_patterns = { "solutions/", "files/emails", "%pnpm-lock.yaml", "snippet/", "snippets/", "%package-lock.json", "target/", ".obsidian/", ".git/", "%.out", "%.class",
+          "%.ico", "%.pdf", "%.mkv", "%.ttf", "%.woff", "%.eot", "%.svg", '%.webp', '%.png', "%.mp4", "%.zip", "yarn.lock", ".yarn/", ".vscode/" },
+        mappings = {
+              i = {
+            ['<c-space>'] = 'to_fuzzy_refine',
+            ['<c-g>'] = function(prompt_bufnr)
+              local action_state = require('telescope.actions.state')
+              local current_picker = action_state.get_current_picker(prompt_bufnr)
+              if not current_picker then
+                print 'No active Telescope picker'
+                return
+              end
+
+              local results = {}
+              for entry in current_picker.manager:iter() do
+                table.insert(results, entry)
+              end
+
+              local search_dirs = {}
+              for _, subtable in ipairs(results) do
+                if subtable.path then -- Check if the 'path' property exists
+                  table.insert(search_dirs, subtable.path)
+                end
+              end
+
+              require('telescope.builtin').live_grep { search_dirs = search_dirs }
+            end,
+            ["<esc>"] = actions.close,
+            ["<C-t>"] = actions.send_to_qflist + actions.open_qflist
+          },
+        },
+        layout_config = {
+          horizontal = {
+            -- preview_width = 0.5,
+            preview_width = 0,
+            results_width = 0.8,
+          },
+          -- vertical = {
+          --   mirror = false,
+          -- },
+          width = 0.90,
+          height = 0.90,
+          preview_cutoff = 20,
+        },
+        prompt_prefix = "   ",
+      }
+    }
+    vim.keymap.set('v', '/', require("telescope.builtin").grep_string, {})
+    vim.keymap.set("n", "<leader><space>", require("telescope.builtin").find_files, {
+      silent = true
+    })
+    vim.keymap.set("n", "<leader>u", require("telescope.builtin").find_files, {
+      silent = true
+    })
+    vim.keymap.set("n", "<Up>", require("telescope.builtin").find_files, {
+      silent = true
+    })
+  end
 }
 }
 
