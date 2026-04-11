@@ -162,10 +162,9 @@ local plugins = {
   {
     "mbbill/undotree",
     lazy = true,
-    keys = { ",u" },
-    config = function()
-      vim.keymap.set("n", ",u", "<CMD>UndotreeToggle<CR>", { silent = true })
-    end,
+    keys = {
+      { ",u", "<CMD>UndotreeToggle<CR>" },
+    }
   },
   { import = "plugins" },
   {
