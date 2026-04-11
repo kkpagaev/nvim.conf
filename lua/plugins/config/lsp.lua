@@ -1,12 +1,11 @@
-  local nmap = function(keys, func, desc)
-    if desc then
-      desc = 'LSP: ' .. desc
-    end
+local nmap = function(keys, func, desc)
+if desc then
+  desc = 'LSP: ' .. desc
+end
 
-    vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
-  end
+vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+end
 
--- vim.keymap.set("n", "S", require("hover").hover, { desc = "hover.nvim" })
 vim.keymap.set('n', 'S', function()
   vim.lsp.buf.hover({
     border = "rounded"

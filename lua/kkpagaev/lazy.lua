@@ -13,23 +13,6 @@ vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
   {
-    "nvim-tree/nvim-web-devicons",
-    lazy = true,
-    -- event = "VeryLazy",
-    opts = {
-      override = {
-        zsh = {
-          icon = "",
-          color = "#428850",
-          cterm_color = "65",
-          name = "Zsh",
-        },
-      },
-      color_icons = true,
-      default = true,
-    },
-  },
-  {
     'numToStr/Comment.nvim',
     lazy = true,
     opts = {},
@@ -47,30 +30,6 @@ local plugins = {
     config = function()
       require("colorizer").setup {
         filetypes = { "lua", "scss", "css", "typescriptreact", "javascriptreact", "vue", "astro", "conf", "kitty" },
-        user_default_options = {
-          RGB = true,          -- #RGB hex codes
-          RRGGBB = true,       -- #RRGGBB hex codes
-          names = true,        -- "Name" codes like Blue or blue
-          RRGGBBAA = false,    -- #RRGGBBAA hex codes
-          AARRGGBB = false,    -- 0xAARRGGBB hex codes
-          rgb_fn = false,      -- CSS rgb() and rgba() functions
-          hsl_fn = false,      -- CSS hsl() and hsla() functions
-          css = false,         -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
-          css_fn = false,      -- Enable all CSS *functions*: rgb_fn, hsl_fn
-          -- Available modes for `mode`: foreground, background,  virtualtext
-          mode = "foreground", -- Set the display mode.
-          -- Available methods are false / true / "normal" / "lsp" / "both"
-          -- True is same as normal
-          tailwind = true,                                 -- Enable tailwind colors
-          -- parsers can contain values used in |user_default_options|
-          sass = { enable = false, parsers = { "css" }, }, -- Enable sass colors
-          virtualtext = "■",
-          -- update color values even if buffer is not focused
-          -- example use: cmp_menu, cmp_docs
-          always_update = false
-        },
-        -- all the sub-options of filetypes apply to buftypes
-        buftypes = {},
       }
     end
   },
@@ -102,13 +61,81 @@ local plugins = {
       end)
     end,
   },
-
   {
     "mhartington/formatter.nvim",
     event = "BufWritePre",
     lazy = false,
     config = function()
-      require("plugins.config.formatter")
+        local capabilities = vim.lsp.protocol.make_client_capabilities()
+        capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+
+        local util = require "formatter.util"
+
+        -- :clown:
+        local function format_eslint()
+            return {
+                exe = "eslint_d",
+                args = {
+                    "--stdin",
+                    "--stdin-filename",
+                    util.escape_path(util.get_current_buffer_file_path()),
+                    "--fix-to-stdout",
+                },
+                stdin = true,
+                try_node_modules = true,
+            }
+        end
+
+        local function format_prettier()
+            return {
+                exe = "/Users/kkpagaev/.config/yarn/global/node_modules/.bin/prettier-hbs",
+                args = { util.escape_path(util.get_current_buffer_file_path()) },
+                stdin = true,
+            }
+        end
+
+        local golang = require("formatter.filetypes.go")
+
+        require('formatter').setup {
+            logging = true,
+            filetype = {
+
+                typescript = { format_prettier },
+                typescriptreact = { format_prettier },
+                javascriptreact = { format_prettier },
+                vue = { format_prettier },
+                javascript = { format_prettier },
+                ["html.handlebars"] = { format_prettier},
+                -- html = { format_prettier },
+
+                -- typescript = { format_eslint },
+                -- javascript = { format_eslint },
+                -- typescriptreact = { format_eslint },
+                -- vue = { format_eslint },
+
+                scss = { format_prettier },
+                astro = { format_eslint },
+                go = {
+                    golang.gofmt,
+                    golang.goimports,
+                },
+            }
+        }
+
+        local ag = vim.api.nvim_create_augroup
+        local au = vim.api.nvim_create_autocmd
+
+        au("BufWritePost", {
+            group = ag("formatting", {}),
+            pattern = "*",
+            callback = function()
+                if vim.bo.filetype == "vue" then
+                    return
+                end
+                vim.cmd("FormatWrite")
+            end
+        })
     end
   },
 
@@ -183,20 +210,6 @@ local plugins = {
         }
     end
   },
-  {
-    "lewis6991/hover.nvim",
-    lazy = true,
-    opts = {
-      init = function()
-        require("hover.providers.lsp")
-      end,
-      preview_opts = {
-        border = nil
-      },
-      preview_window = false,
-      title = true
-    }
-  },
    {
   "LunarVim/bigfile.nvim",
   -- enabled = false,
@@ -234,12 +247,6 @@ local plugins = {
       require("tailwindcss-colorizer-cmp").setup({
         color_square_width = 2,
       })
-    end
-  },
-  {
-    "jose-elias-alvarez/null-ls.nvim",
-    config = function()
-      require("plugins.config.lint")
     end
   },
   {
@@ -596,7 +603,40 @@ local plugins = {
       silent = true
     })
   end
-}
+},
+    {
+      "nvim-treesitter/nvim-treesitter",
+      dependencies = {
+        "nvim-treesitter/nvim-treesitter-context",
+        "windwp/nvim-ts-autotag",
+      },
+      lazy = false,
+      config = function()
+        -- Using protected call
+        local status_ok, treesitter_config = pcall(require, "nvim-treesitter.configs")
+        if not status_ok then
+          return
+        end
+
+        treesitter_config.setup {
+          ensure_installed = { "yaml", "go", "tsx", "lua", "json", "graphql", "regex", "vim", "markdown", "markdown_inline", "dockerfile", "prisma", "vue",
+          "vimdoc", "luadoc", "vim", "lua", "markdown"
+            },
+
+          highlight = {
+            enable = false,
+            custom_captures = {
+              ["attr.value"] = "TSKeyword"
+            }
+          },
+        }
+        require'treesitter-context'.setup{
+          max_lines = 2, -- How many lines the window should span. Values <= 0 mean no limit.
+        }
+      end,
+      cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
+      build = ":TSUpdate",
+    }
 }
 
 require("lazy").setup(plugins, {
