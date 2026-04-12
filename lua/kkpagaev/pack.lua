@@ -377,20 +377,9 @@ do
   local group = vim.api.nvim_create_augroup("Harpoon Augroup", { clear = true })
 
   vim.api.nvim_create_autocmd("FileType", {
-    pattern = "harpoon", group = group,
-    callback = function()
-      vim.keymap.set("n", "s", function()
-        local curline = vim.api.nvim_get_current_line()
-        vim.cmd("vs")
-        vim.cmd("e " .. vim.fn.getcwd() .. "/" .. curline)
-      end, { buffer = true, noremap = true, silent = true })
-    end,
-  })
-
-  vim.api.nvim_create_autocmd("FileType", {
     callback = function()
       local ft = vim.bo.filetype
-      if ft == "qf" or ft == "netrw" or ft == "oil" then return end
+      if ft == "qf" or ft == "netrw" or ft == "oil" or ft == "git" then return end
       vim.keymap.set("n", "<CR>", function()
         mark.toggle_file(mark.get_current_index())
       end, { buffer = true, noremap = true, silent = true })
@@ -458,7 +447,7 @@ do
   map("<leader>:",       function() Snacks.picker.commands() end,    "Commands")
   map("<leader>fh",      function() Snacks.picker.help() end,        "Help tags")
   map("<leader>fg",      function() Snacks.picker.git_status() end,  "Git status")
-  map("<leader>fb",      function() Snacks.picker.buffers() end,     "Buffers")
+  map("<leader>t",       function() Snacks.picker.buffers() end,     "Buffers")
   map("<leader>fy",      function() Snacks.picker.registers() end,   "Registers")
   map(",r",              function() Snacks.picker.resume() end,      "Resume")
 
