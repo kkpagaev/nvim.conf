@@ -20,13 +20,9 @@ local plugins = {
       default = true,
     },
   },
-  -- for coffeescript only
   {
     "sheerun/vim-polyglot",
-    lazy = false,  -- don't load immediately
-    config = function()
-      -- vim.g.polyglot_disabled = {} -- or list languages to disable
-    end,
+    lazy = false,
   },
   {
     "NvChad/nvim-colorizer.lua",
@@ -77,14 +73,14 @@ local plugins = {
       require("formatter").setup {
         logging = true,
         filetype = {
-          typescript       = { format_prettier },
-          typescriptreact  = { format_prettier },
-          javascriptreact  = { format_prettier },
-          vue              = { format_prettier },
-          javascript       = { format_prettier },
+          typescript          = { format_prettier },
+          typescriptreact     = { format_prettier },
+          javascriptreact     = { format_prettier },
+          vue                 = { format_prettier },
+          javascript          = { format_prettier },
           ["html.handlebars"] = { format_prettier },
-          scss             = { format_prettier },
-          astro            = { format_prettier },
+          scss                = { format_prettier },
+          astro               = { format_prettier },
         },
       }
 
@@ -107,9 +103,9 @@ local plugins = {
       { "j-hui/fidget.nvim", tag = "legacy" },
     },
     config = function()
-      vim.keymap.set("n", "S", function()
-        vim.lsp.buf.hover({ border = "rounded" })
-      end)
+      require("fidget").setup { window = { blend = 0 } }
+
+      vim.keymap.set("n", "S", function() vim.lsp.buf.hover({ border = "rounded" }) end)
       vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help)
       vim.keymap.set("n", ",t", vim.diagnostic.open_float)
       vim.keymap.set("n", "]d", vim.diagnostic.goto_prev)
@@ -119,13 +115,11 @@ local plugins = {
         local map = function(mode, keys, func, desc)
           vim.keymap.set(mode, keys, func, { buffer = bufnr, desc = desc })
         end
-
-        map("n", "ge",         vim.lsp.buf.definition,      "Goto Definition")
-        map("n", "gE",         vim.lsp.buf.type_definition,  "Goto Type Definition")
-        map("n", "gr",         vim.lsp.buf.references,       "Goto References")
-        map({ "n", "v" }, "<leader>a", vim.lsp.buf.code_action, "Code Action")
-        map("n", "<leader>r",  vim.lsp.buf.rename,           "Rename")
-
+        map("n",         "ge",         vim.lsp.buf.definition,     "Goto Definition")
+        map("n",         "gE",         vim.lsp.buf.type_definition, "Goto Type Definition")
+        map("n",         "gr",         vim.lsp.buf.references,      "Goto References")
+        map({ "n", "v" }, "<leader>a", vim.lsp.buf.code_action,    "Code Action")
+        map("n",         "<leader>r",  vim.lsp.buf.rename,          "Rename")
         vim.api.nvim_buf_create_user_command(bufnr, "Format", function()
           vim.lsp.buf.format()
         end, { desc = "Format current buffer with LSP" })
@@ -135,32 +129,10 @@ local plugins = {
       capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
       capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-
       vim.lsp.config.tailwindcss = {
-        on_attach = on_attach,
+        on_attach    = on_attach,
         capabilities = capabilities,
-        filetypes = {
-          "astro", "vue", "elixir", "eelixir", "heex",
-          "javascriptreact", "typescriptreact", "html",
-        },
-      }
-
-      require("typescript-tools").setup {
-        on_attach = on_attach,
-        settings = {
-          server_capabilities        = { semanticTokensProvider = nil },
-          separate_diagnostic_server = true,
-          publish_diagnostic_on      = "insert_leave",
-          tsserver_plugins           = {},
-          tsserver_max_memory        = "auto",
-          code_lens                  = "off",
-          tsserver_file_preferences  = {
-            includeInlayParameterNameHints    = "all",
-            includeCompletionsForModuleExports = false,
-            quotePreference                   = "auto",
-            importModuleSpecifierPreference   = "relative",
-          },
-        },
+        filetypes    = { "astro", "vue", "elixir", "eelixir", "heex", "javascriptreact", "typescriptreact", "html" },
       }
 
       vim.lsp.config.eslint = {
@@ -188,7 +160,23 @@ local plugins = {
         on_attach    = on_attach,
       }
 
-      require('fidget').setup({window = { blend = 0 }})
+      require("typescript-tools").setup {
+        on_attach = on_attach,
+        settings = {
+          server_capabilities        = { semanticTokensProvider = nil },
+          separate_diagnostic_server = true,
+          publish_diagnostic_on      = "insert_leave",
+          tsserver_plugins           = {},
+          tsserver_max_memory        = "auto",
+          code_lens                  = "off",
+          tsserver_file_preferences  = {
+            includeInlayParameterNameHints     = "all",
+            includeCompletionsForModuleExports = false,
+            quotePreference                    = "auto",
+            importModuleSpecifierPreference    = "relative",
+          },
+        },
+      }
 
       vim.lsp.enable("html")
       vim.lsp.enable("tailwindcss")
@@ -257,24 +245,15 @@ local plugins = {
   {
     "mbbill/undotree",
     lazy = true,
-    keys = {
-      { ",u", "<CMD>UndotreeToggle<CR>" },
-    }
+    keys = { { ",u", "<CMD>UndotreeToggle<CR>" } },
   },
   { import = "plugins" },
   {
     "tpope/vim-fugitive",
     lazy = true,
     dependencies = { "tpope/vim-rhubarb" },
-    cmd = { "Git", "GlLog", "Gwrite" },
-    keys = {
-      { "<leader>g" },
-      { "<leader>b" },
-      { "gd" },
-      { "gD" },
-      { "gw" },
-      { "gl" },
-    },
+    cmd  = { "Git", "GlLog", "Gwrite" },
+    keys = { { "<leader>g" }, { "<leader>b" }, { "gd" }, { "gD" }, { "gw" }, { "gl" } },
     config = function()
       vim.keymap.set("n", "<leader>g", function()
         if vim.bo.ft ~= "fugitive" then
@@ -291,9 +270,8 @@ local plugins = {
       vim.keymap.set("n", "gD", ":Gdiffsplit!<CR>", { silent = true })
 
       local group = vim.api.nvim_create_augroup("ThePrimeagen_Fugitive", {})
-      local autocmd = vim.api.nvim_create_autocmd
 
-      autocmd("BufWinEnter", {
+      vim.api.nvim_create_autocmd("BufWinEnter", {
         group = group,
         pattern = "*",
         callback = function()
@@ -304,7 +282,7 @@ local plugins = {
         end,
       })
 
-      autocmd("BufWinEnter", {
+      vim.api.nvim_create_autocmd("BufWinEnter", {
         group = group,
         pattern = "*",
         callback = function()
@@ -328,33 +306,28 @@ local plugins = {
   },
   {
     "stevearc/oil.nvim",
-    cmd = { "Oil" },
+    cmd  = { "Oil" },
     keys = { "<leader>e" },
     config = function()
       require("oil").setup {
         view_options = { show_hidden = true },
         columns = { "icon" },
         keymaps = {
-          ["m"]    = "actions.select",
-          ["h"]    = "actions.parent",
+          ["m"] = "actions.select",
+          ["h"] = "actions.parent",
         },
       }
-      vim.api.nvim_set_keymap('n', '<Leader>e', [[:sil lua CheckAndOpen()<CR>]], {silent = true})
-
-      function CheckAndOpen()
-          if vim.bo.filetype == 'netrw' or vim.bo.filetype == 'oil' then
-            -- opens latest_buffer in a buffer
-
-            vim.cmd("e " .. latest_buffer)
-          else
-            local current_filename = vim.fn.expand("%:t")
-            local current_buffer = vim.fn.expand("%:p")
-            latest_buffer = current_buffer
-            vim.cmd("Oil")
-          end
-      end
 
       local latest_buffer = ""
+
+      vim.keymap.set("n", "<leader>e", function()
+        if vim.bo.filetype == "oil" then
+          vim.cmd("e " .. latest_buffer)
+        else
+          latest_buffer = vim.fn.expand("%:p")
+          vim.cmd("Oil")
+        end
+      end, { silent = true })
     end,
   },
   {
@@ -371,31 +344,26 @@ local plugins = {
         menu = { border = {} },
       }
 
-      local ui = require("harpoon.ui")
+      local ui   = require("harpoon.ui")
       local mark = require("harpoon.mark")
 
       vim.keymap.set({ "n", "v" }, "<leader>h", ui.toggle_quick_menu)
 
-      vim.keymap.set("n", "<BS>", function()
+      local function nav_or_find(index)
         if mark.get_length() == 0 then
           require("telescope.builtin").find_files()
           return
         end
         vim.cmd("noh")
-        ui.nav_file(1)
-      end)
-      vim.keymap.set("n", "<C-h>", function()
-        if mark.get_length() == 0 then
-          require("telescope.builtin").find_files()
-          return
-        end
-        vim.cmd("noh")
-        ui.nav_file(1)
-      end)
-      vim.keymap.set("n", "<C-t>", function() vim.cmd("noh"); ui.nav_file(2) end)
+        ui.nav_file(index)
+      end
+
+      vim.keymap.set("n", "<BS>",   function() nav_or_find(1) end)
+      vim.keymap.set("n", "<C-h>",  function() nav_or_find(1) end)
+      vim.keymap.set("n", "<C-t>",  function() vim.cmd("noh"); ui.nav_file(2) end)
       vim.keymap.set("n", "<Down>", function() ui.nav_file(3); vim.cmd("noh") end)
-      vim.keymap.set("n", "<C-n>", function() ui.nav_file(3); vim.cmd("noh") end)
-      vim.keymap.set("n", "<C-s>", function() vim.cmd("noh"); ui.nav_file(4) end)
+      vim.keymap.set("n", "<C-n>",  function() ui.nav_file(3); vim.cmd("noh") end)
+      vim.keymap.set("n", "<C-s>",  function() vim.cmd("noh"); ui.nav_file(4) end)
 
       vim.keymap.set("n", "M", function()
         mark.toggle_file(mark.get_current_index())
@@ -437,18 +405,18 @@ local plugins = {
       { "<leader><space>" },
       { "<Up>" },
       { "<leader>u" },
-      { "<C-p>",      "<cmd>Telescope git_files<CR>",  desc = "Find git files",  silent = true },
-      { "<leader>/",  "<cmd>Telescope live_grep<CR>",  desc = "Live grep",       silent = true },
-      { "<leader>:",  "<cmd>Telescope commands<CR>",   desc = "Commands",        silent = true },
-      { "<leader>fh", "<cmd>Telescope help_tags<CR>",  desc = "Help tags",       silent = true },
-      { "<leader>fg", "<cmd>Telescope git_status<CR>", desc = "Git status",      silent = true },
-      { "<leader>fb", "<cmd>Telescope buffers<CR>",    desc = "Buffers",         silent = true },
-      { "<leader>fy", "<cmd>Telescope registers<CR>",  desc = "Registers",       silent = true },
-      { ",r",         "<cmd>Telescope resume<CR>",     desc = "Resume",          silent = true },
+      { "<C-p>",      "<cmd>Telescope git_files<CR>",  desc = "Find git files", silent = true },
+      { "<leader>/",  "<cmd>Telescope live_grep<CR>",  desc = "Live grep",      silent = true },
+      { "<leader>:",  "<cmd>Telescope commands<CR>",   desc = "Commands",       silent = true },
+      { "<leader>fh", "<cmd>Telescope help_tags<CR>",  desc = "Help tags",      silent = true },
+      { "<leader>fg", "<cmd>Telescope git_status<CR>", desc = "Git status",     silent = true },
+      { "<leader>fb", "<cmd>Telescope buffers<CR>",    desc = "Buffers",        silent = true },
+      { "<leader>fy", "<cmd>Telescope registers<CR>",  desc = "Registers",      silent = true },
+      { ",r",         "<cmd>Telescope resume<CR>",     desc = "Resume",         silent = true },
     },
     config = function()
       local telescope = require("telescope")
-      local actions = require("telescope.actions")
+      local actions   = require("telescope.actions")
 
       telescope.setup {
         pickers = {
@@ -466,14 +434,12 @@ local plugins = {
             i = {
               ["<c-space>"] = "to_fuzzy_refine",
               ["<c-g>"] = function(prompt_bufnr)
-                local action_state = require("telescope.actions.state")
+                local action_state  = require("telescope.actions.state")
                 local current_picker = action_state.get_current_picker(prompt_bufnr)
                 if not current_picker then return end
                 local search_dirs = {}
                 for entry in current_picker.manager:iter() do
-                  if entry.path then
-                    table.insert(search_dirs, entry.path)
-                  end
+                  if entry.path then table.insert(search_dirs, entry.path) end
                 end
                 require("telescope.builtin").live_grep { search_dirs = search_dirs }
               end,
@@ -482,12 +448,9 @@ local plugins = {
             },
           },
           layout_config = {
-            horizontal = {
-              preview_width = 0,
-              results_width = 0.8,
-            },
-            width = 0.90,
-            height = 0.90,
+            horizontal  = { preview_width = 0, results_width = 0.8 },
+            width        = 0.90,
+            height       = 0.90,
             preview_cutoff = 20,
           },
           prompt_prefix = "   ",
@@ -497,8 +460,8 @@ local plugins = {
       local builtin = require("telescope.builtin")
       vim.keymap.set("v", "/", builtin.grep_string)
       vim.keymap.set("n", "<leader><space>", builtin.find_files, { silent = true })
-      vim.keymap.set("n", "<leader>u", builtin.find_files, { silent = true })
-      vim.keymap.set("n", "<Up>", builtin.find_files, { silent = true })
+      vim.keymap.set("n", "<leader>u",       builtin.find_files, { silent = true })
+      vim.keymap.set("n", "<Up>",            builtin.find_files, { silent = true })
     end,
   },
   {
@@ -508,6 +471,7 @@ local plugins = {
       "nvim-treesitter/nvim-treesitter-context",
       "windwp/nvim-ts-autotag",
     },
+    build = ":TSUpdate",
     config = function()
       require("nvim-treesitter.configs").setup {
         ensure_installed = {
@@ -515,13 +479,9 @@ local plugins = {
           "markdown", "markdown_inline", "dockerfile", "prisma", "vue",
           "vimdoc", "luadoc",
         },
-        highlight = {
-          enable = false,
-        },
+        highlight = { enable = false },
       }
-      require("treesitter-context").setup {
-        max_lines = 2,
-      }
+      require("treesitter-context").setup { max_lines = 2 }
     end,
   },
 }
