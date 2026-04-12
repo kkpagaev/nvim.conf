@@ -73,7 +73,7 @@ do
       NormalFloat  = { bg = "none" },
       FloatBorder  = { bg = "none" },
       FloatTitle   = { bg = "none" },
-      StatusLine   = { fg = palette.bg0, bg = palette.fg1 },
+      StatusLine   = { fg = palette.bg0, bg = palette.dark0_hard },
       StatusLineNC = { fg = palette.bg0, bg = palette.fg3 },
       WinBar       = { bg = "" },
       WinBarNC     = { bg = "" },
