@@ -1,79 +1,81 @@
+vim.g.mapleader      = " "
+vim.g.maplocalleader = " "
 
-local g = vim.g
-
-local function map(m, k, v)
+local map = function(m, k, v)
   vim.keymap.set(m, k, v, { silent = true })
 end
 
-vim.api.nvim_set_keymap("n", "gx", [[:silent execute '!open -a "Zen" ' . shellescape(expand('<cfile>') . '', 1)<CR>]], {})
+-- Leader
+map("n", "<leader>", "")
 
-g.mapleader = " "
-g.maplocalleader = " "
+-- Insert mode
+map("i", "<C-BS>", "<C-w>")
+map("i", "<C-g>",  "<C-o>")
+map("i", "<C-d>",  "<M-d>")
+map("i", "<C-l>",  "<Right>")
+map("i", "<C-c>",  "<ESC>")
 
-map('n', "<leader>", "")
+-- Motion remaps (swap f/t behaviour)
+map("n", "t", "f")
+map("n", "f", "t")
+map("n", "T", "F")
+map("n", "F", "T")
 
-map('i', "<C-BS>", "<C-w>")
-map('i', "<C-g>", "<C-o>")
-map('i', "<C-d>", "<M-d>")
-map('i', "<C-l>", "<Right>")
+-- Window / file ops
+map("n", ",",  "<C-w>")
+map("n", ",.", ":w<CR>")
+map("n", ",d", ":q<CR>")
 
+-- Indentation
+map("n", ">", ">>")
+map("n", "<", "<<")
 
-map('n', "t", "f")
-map('n', "f", "t")
+-- Undo / redo
+map("n", "U", "<C-r>")
 
-map('n', "T", "F")
-map('n', "F", "T")
+-- Search
+map("n", "<esc>", function() vim.cmd("noh") end)
+map("n", "n", "nzzzv")
+map("n", "N", "Nzzzv")
 
-
-vim.api.nvim_set_keymap('n', ',', '<C-w>', { noremap = true })
-map('n', ",.", ':w<CR>')
-vim.api.nvim_set_keymap('n', ",d", ':q<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '>', '>>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<', '<<', { noremap = true })
-
+-- Substitute word under cursor
 vim.keymap.set("n", "<leader>s", [[:s/\<<C-r><C-w>\>//gI<Left><Left><Left>]])
 vim.keymap.set("n", "<leader>S", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
-map('n', "<leader>q", ":copen<cr>")
+-- Clipboard
+map("n", "<leader>y", '"+y')
+map("v", "<leader>y", '"+y')
+map("x", "<leader>p", '"_dP')
 
-map('n', '<leader>i', ':TSToolsAddMissingImports<CR>')
+-- Quickfix
+map("n", "<leader>q", ":copen<CR>")
+map("n", "(", "<cmd>keepjumps cprev<CR>zz")
+map("n", ")", "<cmd>keepjumps cnext<CR>zz")
 
-map('n', '<leader>d', ':TSToolsRemoveUnused<CR>')
+-- Jump list (centered)
+map("n", "<C-i>", "<C-I>zz")
+map("n", "<C-o>", "<C-o>zz")
 
-map('n', "yf", 'jgg"+yG<c-o>k')
-
-map('n', 'U', '<c-r>')
-
-map('v', "<leader>y", '"+y')
-map('n', "<leader>y", '"+y')
-
-
-map('v', "J", "j")
-map('v', "K", "k")
-
-vim.keymap.set('n', '<esc>', function() vim.cmd('noh') end, { silent = true })
-
-vim.keymap.set("i", "<C-c>", "<ESC>", { silent = true })
-
+-- Join without moving cursor
 vim.keymap.set("n", "J", "mzJ`z")
 
-vim.keymap.set("x", "<leader>p", [["_dP]])
-
-vim.keymap.set("n", "(", "<cmd>keepjumps cprev<CR>zz")
-vim.keymap.set("n", ")", "<cmd>keepjumps cnext<CR>zz")
-
-vim.keymap.set("n", "gh", "<cmd>TSToolsGoToSourceDefinition<CR>")
-
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
-
-vim.cmd([[nmap + %]])
-vim.cmd([[vmap + %]])
-vim.keymap.set("n", "+", "%")
-vim.keymap.set("v", "+", "%")
-
+-- Move lines in visual mode
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
-vim.keymap.set("n", "<C-i>", "<C-I>zz")
-vim.keymap.set("n", "<C-o>", "<C-o>zz")
+-- Match bracket
+map("n", "+", "%")
+map("v", "+", "%")
+
+-- Yank file contents
+map("n", "yf", 'jgg"+yG<C-o>k')
+
+-- TypeScript tools
+map("n", "<leader>i", ":TSToolsAddMissingImports<CR>")
+map("n", "<leader>d", ":TSToolsRemoveUnused<CR>")
+map("n", "gh",        "<cmd>TSToolsGoToSourceDefinition<CR>")
+
+-- Open URL under cursor in Zen browser
+vim.keymap.set("n", "gx", function()
+  vim.fn.jobstart({ "open", "-a", "Zen", vim.fn.expand("<cfile>") }, { detach = true })
+end)
