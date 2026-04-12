@@ -292,9 +292,17 @@ do
     },
   }
 
-  vim.lsp.enable("html")
+  vim.lsp.config.coffeesense = {
+    cmd          = { "coffeesense-language-server", "--stdio" },
+    filetypes    = { "coffee" },
+    root_markers = { "package.json", ".git" },
+    on_attach    = on_attach,
+    capabilities = capabilities,
+  }
+
   vim.lsp.enable("tailwindcss")
   vim.lsp.enable("eslint")
+  vim.lsp.enable("coffeesense")
   vim.lsp.enable("ruby_lsp")
   vim.lsp.enable("locales_lsp")
   vim.lsp.enable("capybar_lsp")
