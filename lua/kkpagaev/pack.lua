@@ -186,7 +186,7 @@ do
 
   local function format_prettier()
     return {
-      exe = "/Users/kkpagaev/.config/yarn/global/node_modules/.bin/prettier-hbs",
+      exe = vim.fn.expand("~/.config/yarn/global/node_modules/.bin/prettier-hbs"),
       args = { util.escape_path(util.get_current_buffer_file_path()) },
       stdin = true,
     }
@@ -210,7 +210,7 @@ do
     group = vim.api.nvim_create_augroup("formatting", {}),
     pattern = "*",
     callback = function()
-      if vim.bo.filetype ~= "vue" then vim.cmd("FormatWrite") end
+      vim.cmd("FormatWrite")
     end,
   })
 end
@@ -242,7 +242,7 @@ do
 
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
-  capabilities.textDocument.completion.completionItem.snippetSupport = true
+  capabilities.textDocument.completion.completionItem.snippetSupport = false
 
   vim.lsp.config.tailwindcss = {
     on_attach    = on_attach,
@@ -294,6 +294,7 @@ do
 
   vim.lsp.enable("html")
   vim.lsp.enable("tailwindcss")
+  vim.lsp.enable("eslint")
   vim.lsp.enable("ruby_lsp")
   vim.lsp.enable("locales_lsp")
   vim.lsp.enable("capybar_lsp")
@@ -356,7 +357,6 @@ do
   end
 
   vim.keymap.set("n", "<BS>",   function() nav_or_find(1) end)
-  vim.keymap.set("n", "<C-h>",  function() nav_or_find(1) end)
   vim.keymap.set("n", "<C-t>",  function() vim.cmd("noh"); ui.nav_file(2) end)
   vim.keymap.set("n", "<Down>", function() ui.nav_file(3); vim.cmd("noh") end)
   vim.keymap.set("n", "<C-n>",  function() ui.nav_file(3); vim.cmd("noh") end)
