@@ -77,6 +77,7 @@ do
       StatusLineNC = { fg = palette.bg0, bg = palette.fg3 },
       WinBar       = { bg = "" },
       WinBarNC     = { bg = "" },
+      Directory         = { fg = "#83a598" },
       SignColumn        = { link = "Normal" },
       GruvboxGreenSign  = { bg = "" },
       GruvboxOrangeSign = { bg = "" },
