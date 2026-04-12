@@ -39,7 +39,7 @@ vim.pack.add({
   -- navigation
   { src = gh .. "ThePrimeagen/harpoon" },
   { src = gh .. "stevearc/oil.nvim" },
-  { src = gh .. "nvim-telescope/telescope.nvim" },
+  { src = gh .. "folke/snacks.nvim" },
 
   -- treesitter (run :TSUpdate after install)
   { src = gh .. "nvim-treesitter/nvim-treesitter" },
@@ -357,7 +357,7 @@ do
 
   local function nav_or_find(index)
     if mark.get_length() == 0 then
-      require("telescope.builtin").find_files()
+      Snacks.picker.files()
       return
     end
     vim.cmd("noh")
@@ -420,61 +420,49 @@ do
 end
 
 do
-  local telescope = require("telescope")
-  local actions   = require("telescope.actions")
+  local exclude = {
+    "solutions/", "files/emails", "snippet/", "snippets/", "target/",
+    ".obsidian/", ".git/", ".yarn/", ".vscode/", "yarn.lock",
+    "*.lock", "*.out", "*.class", "*.ico", "*.pdf", "*.mkv",
+    "*.ttf", "*.woff", "*.eot", "*.svg", "*.webp", "*.png", "*.mp4", "*.zip",
+  }
 
-  telescope.setup {
-    pickers = {
-      colorscheme = { enable_preview = true },
-      find_files  = { hidden = true },
-    },
-    defaults = {
-      file_ignore_patterns = {
-        "solutions/", "files/emails", "%pnpm-lock.yaml", "snippet/", "snippets/",
-        "%package-lock.json", "target/", ".obsidian/", ".git/", "%.out", "%.class",
-        "%.ico", "%.pdf", "%.mkv", "%.ttf", "%.woff", "%.eot", "%.svg", "%.webp",
-        "%.png", "%.mp4", "%.zip", "yarn.lock", ".yarn/", ".vscode/",
+  require("snacks").setup {
+    picker = {
+      hidden  = true,
+      exclude = exclude,
+      layout  = {
+        preset = "default",
+        preview = false,
       },
-      mappings = {
-        i = {
-          ["<c-space>"] = "to_fuzzy_refine",
-          ["<c-g>"] = function(prompt_bufnr)
-            local action_state   = require("telescope.actions.state")
-            local current_picker = action_state.get_current_picker(prompt_bufnr)
-            if not current_picker then return end
-            local search_dirs = {}
-            for entry in current_picker.manager:iter() do
-              if entry.path then table.insert(search_dirs, entry.path) end
-            end
-            require("telescope.builtin").live_grep { search_dirs = search_dirs }
-          end,
-          ["<esc>"] = actions.close,
-          ["<C-t>"] = actions.send_to_qflist + actions.open_qflist,
+      win = {
+        input = {
+          keys = {
+            ["<C-t>"]     = { "qflist",      mode = { "i", "n" } },
+            ["<c-space>"] = { "toggle_live", mode = { "i", "n" } },
+          },
         },
       },
-      layout_config = {
-        horizontal     = { preview_width = 0, results_width = 0.8 },
-        width          = 0.90,
-        height         = 0.90,
-        preview_cutoff = 20,
-      },
-      prompt_prefix = "   ",
     },
   }
 
-  local builtin = require("telescope.builtin")
-  vim.keymap.set("v", "/",              builtin.grep_string)
-  vim.keymap.set("n", "<leader><space>", builtin.find_files, { silent = true })
-  vim.keymap.set("n", "<leader>u",      builtin.find_files, { silent = true })
-  vim.keymap.set("n", "<Up>",           builtin.find_files, { silent = true })
-  vim.keymap.set("n", "<C-p>",          "<cmd>Telescope git_files<CR>",  { silent = true })
-  vim.keymap.set("n", "<leader>/",      "<cmd>Telescope live_grep<CR>",  { silent = true })
-  vim.keymap.set("n", "<leader>:",      "<cmd>Telescope commands<CR>",   { silent = true })
-  vim.keymap.set("n", "<leader>fh",     "<cmd>Telescope help_tags<CR>",  { silent = true })
-  vim.keymap.set("n", "<leader>fg",     "<cmd>Telescope git_status<CR>", { silent = true })
-  vim.keymap.set("n", "<leader>fb",     "<cmd>Telescope buffers<CR>",    { silent = true })
-  vim.keymap.set("n", "<leader>fy",     "<cmd>Telescope registers<CR>",  { silent = true })
-  vim.keymap.set("n", ",r",             "<cmd>Telescope resume<CR>",     { silent = true })
+  local map = function(k, fn, desc)
+    vim.keymap.set("n", k, fn, { silent = true, desc = desc })
+  end
+
+  map("<leader><space>", function() Snacks.picker.files() end,       "Find files")
+  map("<Up>",            function() Snacks.picker.files() end,       "Find files")
+  map("<leader>u",       function() Snacks.picker.files() end,       "Find files")
+  map("<C-p>",           function() Snacks.picker.git_files() end,   "Find git files")
+  map("<leader>/",       function() Snacks.picker.grep() end,        "Live grep")
+  map("<leader>:",       function() Snacks.picker.commands() end,    "Commands")
+  map("<leader>fh",      function() Snacks.picker.help() end,        "Help tags")
+  map("<leader>fg",      function() Snacks.picker.git_status() end,  "Git status")
+  map("<leader>fb",      function() Snacks.picker.buffers() end,     "Buffers")
+  map("<leader>fy",      function() Snacks.picker.registers() end,   "Registers")
+  map(",r",              function() Snacks.picker.resume() end,      "Resume")
+
+  vim.keymap.set("v", "/", function() Snacks.picker.grep_word() end)
 end
 
 -- ── Treesitter ──────────────────────────────────────────────────────────────────
