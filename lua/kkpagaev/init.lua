@@ -1,5 +1,5 @@
 require('kkpagaev.set')
 require('kkpagaev.remap')
-require('kkpagaev.lazy')
+require('kkpagaev.pack')
 require('kkpagaev.autocmd')
 require('kkpagaev.cwd')
