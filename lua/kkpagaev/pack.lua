@@ -40,11 +40,6 @@ vim.pack.add({
   { src = gh .. "ThePrimeagen/harpoon" },
   { src = gh .. "stevearc/oil.nvim" },
   { src = gh .. "folke/snacks.nvim" },
-
-  -- treesitter (run :TSUpdate after install)
-  { src = gh .. "nvim-treesitter/nvim-treesitter" },
-  { src = gh .. "nvim-treesitter/nvim-treesitter-context" },
-  { src = gh .. "windwp/nvim-ts-autotag" },
 })
 
 -- ── Colorscheme ────────────────────────────────────────────────────────────────
@@ -454,15 +449,3 @@ do
 
   vim.keymap.set("v", "/", function() Snacks.picker.grep_word() end)
 end
-
--- ── Treesitter ──────────────────────────────────────────────────────────────────
-
-require("nvim-treesitter.config").setup {
-  ensure_installed = {
-    "yaml", "go", "tsx", "lua", "json", "graphql", "regex", "vim",
-    "markdown", "markdown_inline", "dockerfile", "prisma", "vue",
-    "vimdoc", "luadoc",
-  },
-  highlight = { enable = false },
-}
-require("treesitter-context").setup { max_lines = 2 }
