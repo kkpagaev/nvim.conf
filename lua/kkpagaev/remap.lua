@@ -75,6 +75,28 @@ map("n", "<leader>i", ":TSToolsAddMissingImports<CR>")
 map("n", "<leader>d", ":TSToolsRemoveUnused<CR>")
 map("n", "gh",        "<cmd>TSToolsGoToSourceDefinition<CR>")
 
+-- Filetype keymaps
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("ft_keymaps", { clear = true }),
+  pattern = { "javascript", "typescript", "typescriptreact", "javascriptreact", "coffee" },
+  callback = function()
+    local m = function(mode, k, v)
+      vim.keymap.set(mode, k, v, { silent = true, buffer = true })
+    end
+    m("n", ",h", "odebugger<esc>:w<cr>")
+    m("n", ",H", "yiwOconsole.log(<esc>pa);<esc>")
+    m("v", ",",  "yoconsole.log({ <esc>pa });<esc>")
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("ft_keymaps_cucumber", { clear = true }),
+  pattern = "cucumber",
+  callback = function()
+    vim.keymap.set("n", ",h", "oAnd   I stop at breakpoint<esc>:w<cr>", { silent = true, buffer = true })
+  end,
+})
+
 -- Open URL under cursor in Zen browser
 vim.keymap.set("n", "gx", function()
   vim.fn.jobstart({ "open", "-a", "Zen", vim.fn.expand("<cfile>") }, { detach = true })
