@@ -15,7 +15,6 @@ local plugins = {
   {
     "nvim-tree/nvim-web-devicons",
     lazy = true,
-    -- event = "VeryLazy",
     opts = {
       color_icons = true,
       default = true,
