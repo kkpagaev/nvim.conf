@@ -1,44 +1,34 @@
-local o = vim.o
+local opt = vim.opt
 
-vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
-vim.opt.undofile = true
-vim.opt.swapfile = false
+opt.undodir  = os.getenv("HOME") .. "/.vim/undodir"
+opt.undofile = true
+opt.swapfile = false
+opt.shell    = "/bin/bash"
 
-vim.opt.shell = "/bin/bash"
+opt.relativenumber = true
+opt.number         = true
+opt.cursorline     = false
+opt.inccommand     = "split"
+opt.incsearch      = true
+opt.ignorecase     = true
+opt.smartcase      = true
+opt.smartindent    = true
 
-vim.g.tpipeline_autoembed = false
+opt.tabstop     = 2
+opt.softtabstop = 2
+opt.shiftwidth  = 2
+opt.expandtab   = true
 
-o.relativenumber = true
-o.number = true
-o.cursorline = false
-o.inccommand = "split"
+opt.wrap        = false
+opt.scrolloff   = 6
+opt.signcolumn  = "yes"
+opt.termguicolors = true
+opt.pumheight   = 10
 
-o.tabstop = 2
-o.expandtab = true
-o.softtabstop = 2
-o.shiftwidth = 4
-o.wrap = true
-o.shortmess = o.shortmess .. "at"
+opt.shortmess:append("at")
+opt.diffopt:append("vertical")
+opt.display:append("lastline")
+opt.fillchars = { eob = " " }
 
-vim.opt.diffopt = vim.opt.diffopt + "vertical"
-vim.opt.display = vim.opt.display + 'lastline'
-vim.opt.fillchars = {eob = " "}
-
-vim.opt.scrolloff = 6
-vim.opt.signcolumn = "yes"
-vim.opt.incsearch = true
-
-o.ignorecase = true
-o.smartcase = true
-
-vim.opt.smartindent = true
-
-vim.opt.wrap = false
-
-vim.opt.termguicolors = true
-
-vim.g.crystal_define_mappings = 0
-
-vim.o.timeout = true
+vim.o.timeout    = true
 vim.o.timeoutlen = 1000
-vim.o.pumheight = 10
