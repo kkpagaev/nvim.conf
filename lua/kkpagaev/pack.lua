@@ -132,6 +132,7 @@ do
 end
 
 do
+  vim.keymap.set("v", "<leader>g", ":GBrowse<CR>", { silent = true })
   vim.keymap.set("n", "<leader>g", function()
     if vim.bo.ft ~= "fugitive" then
       vim.cmd.Git()
