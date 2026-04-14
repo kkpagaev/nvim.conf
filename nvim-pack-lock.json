@@ -22,12 +22,13 @@
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
     "gruvbox.nvim": {
-      "rev": "334d5fd49fc8033f26408425366c66c6390c57bb",
+      "rev": "3ffad346df3abb1fb5034e0620af921812aa0ce6",
       "src": "https://github.com/ellisonleao/gruvbox.nvim"
     },
     "harpoon": {
-      "rev": "1bc17e3e42ea3c46b33c0bbad6a880792692a1b3",
-      "src": "https://github.com/ThePrimeagen/harpoon"
+      "rev": "87b1a3506211538f460786c23f98ec63ad9af4e5",
+      "src": "https://github.com/ThePrimeagen/harpoon",
+      "version": "'harpoon2'"
     },
     "numb.nvim": {
       "rev": "12ef3913dea8727d4632c6f2ed47957a993de627",
@@ -42,7 +43,7 @@
       "src": "https://github.com/NvChad/nvim-colorizer.lua"
     },
     "nvim-lspconfig": {
-      "rev": "d27cf1d2ad1af19633ecff8b38eac6d5a899f2ff",
+      "rev": "8a9378a822719346a0288fa004dab302ca3c0a8f",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-surround": {

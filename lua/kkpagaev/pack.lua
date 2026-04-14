@@ -37,7 +37,7 @@ vim.pack.add({
   { src = gh .. "roobert/tailwindcss-colorizer-cmp.nvim" },
 
   -- navigation
-  { src = gh .. "ThePrimeagen/harpoon" },
+  { src = gh .. "ThePrimeagen/harpoon", version = "harpoon2" },
   { src = gh .. "stevearc/oil.nvim" },
   { src = gh .. "folke/snacks.nvim" },
 })
@@ -344,43 +344,29 @@ end
 
 do
   local harpoon = require("harpoon")
-  harpoon.setup { tabline = false, menu = { border = {} } }
+  harpoon:setup()
 
-  local ui   = require("harpoon.ui")
-  local mark = require("harpoon.mark")
-
-  vim.keymap.set({ "n", "v" }, "<leader>h", ui.toggle_quick_menu)
+  vim.keymap.set({ "n", "v" }, "<leader>h", function()
+    harpoon.ui:toggle_quick_menu(harpoon:list())
+  end)
 
   local function nav_or_find(index)
-    if mark.get_length() == 0 then
+    if harpoon:list():length() == 0 then
       Snacks.picker.files()
       return
     end
     vim.cmd("noh")
-    ui.nav_file(index)
+    harpoon:list():select(index)
   end
 
   vim.keymap.set("n", "<BS>",   function() nav_or_find(1) end)
-  vim.keymap.set("n", "<C-t>",  function() vim.cmd("noh"); ui.nav_file(2) end)
-  vim.keymap.set("n", "<Down>", function() ui.nav_file(3); vim.cmd("noh") end)
-  vim.keymap.set("n", "<C-n>",  function() ui.nav_file(3); vim.cmd("noh") end)
-  vim.keymap.set("n", "<C-s>",  function() vim.cmd("noh"); ui.nav_file(4) end)
+  vim.keymap.set("n", "<C-t>",  function() vim.cmd("noh"); harpoon:list():select(2) end)
+  vim.keymap.set("n", "<Down>", function() harpoon:list():select(3); vim.cmd("noh") end)
+  vim.keymap.set("n", "<C-n>",  function() harpoon:list():select(3); vim.cmd("noh") end)
+  vim.keymap.set("n", "<C-s>",  function() vim.cmd("noh"); harpoon:list():select(4) end)
 
-  vim.keymap.set("n", "M", function()
-    mark.toggle_file(mark.get_current_index())
-  end)
-
-  local group = vim.api.nvim_create_augroup("Harpoon Augroup", { clear = true })
-
-  vim.api.nvim_create_autocmd("FileType", {
-    callback = function()
-      local ft = vim.bo.filetype
-      if ft == "qf" or ft == "netrw" or ft == "oil" or ft == "git" then return end
-      vim.keymap.set("n", "<CR>", function()
-        mark.toggle_file(mark.get_current_index())
-      end, { buffer = true, noremap = true, silent = true })
-    end,
-  })
+  vim.keymap.set("n", "M", function() harpoon:list():add(); print('Mark added') end)
+  vim.keymap.set("n", "<CR>", function() harpoon:list():add(); print('Mark added') end)
 end
 
 do
