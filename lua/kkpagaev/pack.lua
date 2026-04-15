@@ -365,7 +365,7 @@ do
   vim.keymap.set("n", "<C-n>",  function() harpoon:list():select(3); vim.cmd("noh") end)
   vim.keymap.set("n", "<C-s>",  function() vim.cmd("noh"); harpoon:list():select(4) end)
 
-  vim.keymap.set("n", "M", function() harpoon:list():add(); print('Mark added') end)
+  vim.keymap.set("n", "M",    function() harpoon:list():add(); print('Mark added') end)
   vim.keymap.set("n", "<CR>", function() harpoon:list():add(); print('Mark added') end)
 end
 
