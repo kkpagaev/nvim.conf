@@ -45,7 +45,6 @@ vim.keymap.set("n", "<leader>S", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 -- Clipboard
 map("n", "<leader>y", '"+y')
 map("v", "<leader>y", '"+y')
-map("x", "<leader>p", '"_dP')
 
 -- Quickfix
 map("n", "<leader>q", ":copen<CR>")
@@ -62,10 +61,6 @@ vim.keymap.set("n", "J", "mzJ`z")
 -- Move lines in visual mode
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
-
--- Match bracket
-map("n", "+", "%")
-map("v", "+", "%")
 
 -- Yank file contents
 map("n", "yf", 'jgg"+yG<C-o>k')
